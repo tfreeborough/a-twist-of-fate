@@ -1,0 +1,22 @@
+{
+  "name": "a-twist-of-fate",
+  "version": "1.0.0",
+  "description": "A league of legends inspired card game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angrytoad/a-twist-of-fate.git"
+  },
+  "author": "Thomas Freeborough,Salvador Holguin,Alex Salam",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/angrytoad/a-twist-of-fate/issues"
+  },
+  "homepage": "https://github.com/angrytoad/a-twist-of-fate#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
+}
