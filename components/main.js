@@ -2,9 +2,10 @@
 
 var Main = React.createClass({
     componentDidMount: function(){
-        socket.on('news', function (data) {
+        console.log('EMITTING - my other event');
+        socket.emit('my other event', { my: 'data' });
+        socket.on('testing', function (data) {
             console.log(data);
-            socket.emit('my other event', { my: 'data' });
         });
     },
     render: function(){

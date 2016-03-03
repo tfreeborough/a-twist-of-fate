@@ -14,8 +14,10 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
+    console.log('CONNECTION MADE');
+    socket.on('my other event', function (socket) {
+        io.emit('testing', { hello: 'world' });
+    });
 });
+
+
