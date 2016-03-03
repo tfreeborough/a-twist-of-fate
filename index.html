@@ -1,6 +1,6 @@
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  var socket = io('http://149.255.61.75');
+  var socket = io('http://localhost');
   socket.on('news', function (data) {
     document.write("Check the console");
     console.log(data);
