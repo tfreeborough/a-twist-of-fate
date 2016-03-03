@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/angrytoad/a-twist-of-fate#readme",
   "dependencies": {
-    "express": "^4.13.4"
+    "babel": "^6.5.2",
+    "babel-register": "^6.6.0",
+    "express": "^4.13.4",
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7"
   }
 }

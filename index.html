@@ -1,9 +1,34 @@
-<script src="/socket.io/socket.io.js"></script>
-<script>
-  var socket = io('http://localhost');
-  socket.on('news', function (data) {
-    document.write("Check the console");
-    console.log(data);
-    socket.emit('my other event', { my: 'data' });
-  });
-</script>
+
+<html>
+    <head>
+        <!-- Required For React -->
+        <script src="/react/react-with-addons.min.js"></script>
+        <script src="/react/react-dom.min.js"></script>
+        <script src="/react/jsx-transformer.js"></script>
+
+        <!-- Socket IO -->
+        <script src="/socket.io/socket.io.js"></script>
+
+        <!-- jQuery -->
+        <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
+
+
+        <script>
+            var socket = io('http://localhost');
+        </script>
+
+
+        <!-- React Components -->
+        <script type="text/jsx" src="/components/main.js"></script>
+
+    </head>
+    <body>
+        <div id="main">
+
+        </div>
+    </body>
+    <script type="text/jsx">
+        /** @jsx React.DOM **/
+        React.render(<Main />,document.getElementById('main'));
+    </script>
+</html>
