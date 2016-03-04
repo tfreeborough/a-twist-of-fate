@@ -1,2 +1,2 @@
-# a-twist-of-fate
-League of legends inspired online card game.
+# A Twist of Fate
+League of legends inspired online card game with written with Node and React.
