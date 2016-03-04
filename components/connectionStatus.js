@@ -3,9 +3,9 @@
 var ConnectionStatus = React.createClass({
     getInitialState: function(){
         return ({
-            connected:true,
-            status:'Connected',
-            connectionMsg:''
+            connected:false,
+            status:'Not Available',
+            connectionMsg:'A connection has yet to be initialted with the server.'
         })
     },
     componentDidMount: function(){
@@ -29,7 +29,11 @@ var ConnectionStatus = React.createClass({
     render: function(){
         var color = 'green';
         if(!this.state.connected){
-            color = 'red';
+            if(this.state.status == 'Not Available'){
+                color = 'yellow';
+            }else{
+                color = 'red';
+            }
         }
         return(
             <div>
