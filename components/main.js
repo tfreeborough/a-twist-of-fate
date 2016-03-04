@@ -2,10 +2,15 @@
 
 var Main = React.createClass({
     componentDidMount: function(){
-        console.log('EMITTING - my other event');
         socket.emit('my other event', { my: 'data' });
         socket.on('testing', function (data) {
             console.log(data);
+        });
+        socket.on('connect', function (data) {
+            venti.trigger('server_connection_success',{msg:'Currently connected to server, good job!'});
+        });
+        socket.on('connect_error', function (data) {
+            venti.trigger('server_connection_error',{msg:'Lost connection to server, is the app running?'});
         });
     },
     render: function(){

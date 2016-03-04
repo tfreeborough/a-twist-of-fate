@@ -1,6 +1,8 @@
 
 <html>
     <head>
+        <link href="/styles/main.css" rel="stylesheet" type="text/css">
+
         <!-- Required For React -->
         <script src="/react/react-with-addons.min.js"></script>
         <script src="/react/react-dom.min.js"></script>
@@ -10,21 +12,29 @@
         <script src="/socket.io/socket.io.js"></script>
         <script src="/react/socket-address.js"></script>
 
+        <!-- Venti -->
+        <script src="external_scripts/venti.min.js"></script>
+
         <!-- jQuery -->
         <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
 
 
         <!-- React Components -->
         <script type="text/jsx" src="/components/main.js"></script>
+        <script type="text/jsx" src="/components/connectionStatus.js"></script>
 
     </head>
     <body>
         <div id="main">
 
         </div>
+        <div id="connection-status">
+
+        </div>
     </body>
     <script type="text/jsx">
         /** @jsx React.DOM **/
         React.render(<Main />,document.getElementById('main'));
+        React.render(<ConnectionStatus />,document.getElementById('connection-status'));
     </script>
 </html>
