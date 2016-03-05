@@ -51,7 +51,7 @@ var Main = React.createClass({
         return(
             <div>
                 <SiteMenu activeLink={this.state.viewing} connection={this.state.connectionToServer}/>
-                <PageContent content={this.state.currentPage} />
+                <PageContent page={this.state.currentPage} />
             </div>
         )
     }

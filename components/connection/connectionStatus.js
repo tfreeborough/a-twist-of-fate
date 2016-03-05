@@ -31,6 +31,10 @@ var ConnectionStatus = React.createClass({
     },
     render: function(){
 
+        /*
+        Pass the current status to the main component, we can then use the status of the connection
+        in areas like the play component, this trigger will re-render the main component.
+         */
         venti.trigger('send_connection_to_main',{connection:this.state.connected});
 
         return(
