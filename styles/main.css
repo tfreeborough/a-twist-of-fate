@@ -31,7 +31,6 @@ video#bgvid {
 }
 
 .main-menu{
-    color: white;
     display: inline-block;
     background: rgba(255,255,2656,0.2);
     margin:0px;
@@ -45,8 +44,16 @@ video#bgvid {
     padding:10px;
 }
 
+.main-menu a{
+    color: white;
+}
+
 .main-menu .active{
     color:#88FF00;
+}
+
+#page-content{
+
 }
 
 @media screen and (max-width: 800px) {

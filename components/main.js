@@ -1,9 +1,18 @@
 /** @jsx React.DOM */
 
 var Main = React.createClass({
+    changePage: function(data){
+        this.setState({viewing:data.page});
+        this.setState({currentPage:data.originalName});
+    },
+    updateConnectionStatus: function(data){
+        this.setState({connectionToServer:data.connection})
+    },
     getInitialState: function(){
         return({
-            viewing:'home'
+            viewing:'home',
+            currentPage:'Home',
+            connectionToServer:false
         })
     },
     componentDidMount: function(){
@@ -11,19 +20,38 @@ var Main = React.createClass({
         socket.on('testing', function (data) {
             console.log(data);
         });
+
+
+        /*
+        Every 1s check connection to server and update status
+         */
         setInterval(function() {
             if (socket.connected) {
                 venti.trigger('server_connection_success',{msg:'Currently connected to server.'});
             }
-        },200);
+        },1000);
+
+        /*
+        On connection error, update connectionStatus component
+         */
         socket.on('connect_error', function (data) {
             venti.trigger('server_connection_error',{msg:'Your connection to the server is temporarily down, you may not play games.'});
         });
+
+        /*
+        Change active page from menuItem component Click
+         */
+        venti.on('changePage',this.changePage)
+        /*
+        Receive connection info from connectionStatus component
+         */
+        venti.on('send_connection_to_main',this.updateConnectionStatus);
     },
     render: function(){
         return(
             <div>
-                <SiteMenu activeLink={this.state.viewing} />
+                <SiteMenu activeLink={this.state.viewing} connection={this.state.connectionToServer}/>
+                <PageContent content={this.state.currentPage} />
             </div>
         )
     }
