@@ -1,12 +1,59 @@
-
-.green{
-    color:green;
+video#bgvid {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background: url("/assets/Twisted_Fate.jpg") no-repeat;
+    background-size: cover;
 }
 
-.red{
-    color:red;
+.server-connection{
+    display: inline-block;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background: rgba(0,0,0,0.5);
+    padding: 10px;
+    color: white;
+    border-radius: 5px 0px 0px 0px;
 }
 
-.yellow{
-    color:#F2B500;
+.server-connection img{
+    width:64px;
+}
+
+.main-menu{
+    color: white;
+    display: inline-block;
+    background: rgba(255,255,2656,0.2);
+    margin:0px;
+    border-radius: 0px 0px 5px 5px;
+    text-align: center;
+    padding: 0px 50px;
+}
+
+.main-menu li{
+    display:inline-block;
+    padding:10px;
+}
+
+.main-menu .active{
+    color:#88FF00;
+}
+
+@media screen and (max-width: 800px) {
+    html {
+        background: url("/assets/Twisted_Fate.jpg") #000 no-repeat center center fixed;
+    }
+    #bgvid {
+        display: none;
+    }
 }

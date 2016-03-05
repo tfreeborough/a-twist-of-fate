@@ -1,7 +1,9 @@
 
 <html>
     <head>
+        <!-- Styles -->
         <link href="/styles/main.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
 
         <!-- Required For React -->
         <script src="/react/react-with-addons.min.js"></script>
@@ -18,10 +20,15 @@
         <!-- jQuery -->
         <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
 
+        <!-- Materialize JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+
 
         <!-- React Components -->
         <script type="text/jsx" src="/components/main.js"></script>
         <script type="text/jsx" src="/components/connectionStatus.js"></script>
+        <script type="text/jsx" src="/components/siteMenu.js"></script>
+        <script type="text/jsx" src="/components/menuItem.js"></script>
 
     </head>
     <body>
@@ -31,6 +38,10 @@
         <div id="connection-status">
 
         </div>
+        <video autoplay loop poster="/assets/Twisted_Fate.jpg" id="bgvid">
+            <source src="/assets/Twisted Fate.webm" type="video/webm">
+            <source src="/assets/Twisted Fate.mp4" type="video/mp4">
+        </video>
     </body>
     <script type="text/jsx">
         /** @jsx React.DOM **/
