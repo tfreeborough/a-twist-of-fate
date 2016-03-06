@@ -5,11 +5,12 @@ var PlayContent = React.createClass({
         return({
             inQueue:'false',
             queueId:'',
-            queueName:''
+            queueName:'',
+            queueConnections:0
         })
     },
     updateQueueName: function(event){
-        this.setState({queueName:event.target.value})
+        this.setState({queueName:event.target.value.replace(/[^a-zA-Z]/g,'')})
     },
     requestQueue: function(){
         if(this.state.queueName != '') {
@@ -21,6 +22,10 @@ var PlayContent = React.createClass({
                 that.setState({inQueue: 'true'});
                 that.setState({queueId: data.id});
             });
+
+            queueSocket.on('queueClientCount', function (data) {
+                that.setState({queueConnections:data.connections});
+            });
         }else{
             alert('Please enter something for your username');
         }
@@ -30,13 +35,17 @@ var PlayContent = React.createClass({
             <div>
                 <p className="flow-text">Please enter your name and then click 'Click to Queue'.</p>
                 <input type="text" onChange={this.updateQueueName} />
-                <span>Username: {this.state.queueName}</span>
+                <span>This is the username others will see: {this.state.queueName}</span>
+                <div className="queue-button">
+                    <a href="javascript:void(0)" onClick={this.requestQueue} className="waves-effect waves-light btn-large purple darken-2">
+                        <div className="queue-button-inner">
+                            <span>Queue</span>
+                            <i className="medium material-icons">av_timer</i>
+                        </div>
+                    </a>
+                </div>
 
-                <h4>
-                    <a className="purple-text darken-2" href="javascript:void(0)" onClick={this.requestQueue}>Click to Queue</a>
-                </h4>
-
-                <p className="flow-text">Connected to queue: {this.state.inQueue}</p>
+                <p className="flow-text">Users in queue: {this.state.queueConnections}</p>
                 <p className="flow-text">Queue Id: {this.state.queueId}</p>
 
                 <QueueTimer inQueue={this.state.inQueue} />
