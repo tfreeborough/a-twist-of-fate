@@ -26,7 +26,7 @@ io.on('connection', function (socket) {
 var queueConnection = io.of('/queue').on('connection', function(socket) {
 	console.log('Queueing Connection made');
 	socket.on('requestQueue', function(data) {
-		$data = data;
+		$data = data.username;
     	$id = (Math.random() * 10) + 1;
     	$id = $id.toFixed(0);
     	console.log("Queueing connection " + $id + ".");
