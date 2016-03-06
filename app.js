@@ -25,11 +25,12 @@ io.on('connection', function (socket) {
 
 var queueConnection = io.of('/queue').on('connection', function(socket) {
 	console.log('Queueing Connection made');
-	socket.on('requestQueue', function(socket) {
+	socket.on('requestQueue', function(data) {
+		$data = data;
     	$id = (Math.random() * 10) + 1;
     	$id = $id.toFixed(0);
     	console.log("Queueing connection " + $id + ".");
-    	io.of('/queue').emit('queueRequestAccepted', {id: $id});
+    	io.of('/queue').emit('queueRequestAccepted', {id: $id, name: $data});
     });
 });
 
