@@ -29,7 +29,6 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     	$id = (Math.random() * 10) + 1;
     	$id = $id.toFixed(0);
     	console.log("Queueing connection " + $id + ".");
-    	socket.to('Lobby');
     	io.emit('queueRequestAccepted', {id: $id});
     });
 });
