@@ -3,6 +3,7 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var queue = [];
 
 server.listen(80);
 
@@ -31,7 +32,12 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     	$id = $id.toFixed(0);
     	console.log("Queueing connection " + $id + ".");
     	io.of('/queue').emit('queueRequestAccepted', {id: $id, name: $data});
+    	queue.push({id: $id, name: $data});
+    	io.of('/queue').broadcast(queue.length);
+    	startGames();
     });
 });
 
-
+function startGames() {
+	console.log('Starting Games!');
+}
