@@ -24,7 +24,7 @@ io.on('connection', function (socket) {
     socket.on('requestQueue', function(socket) {
     	$id = (Math.random() * 10) + 1;
     	console.log("Queueing connection " + $id + ".")
-    	io.emit('queueRequestÁccepted', {id: $id});
+    	io.emit('queueRequestAccepted', {id: $id});
     });
 });
 
