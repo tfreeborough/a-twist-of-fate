@@ -21,9 +21,15 @@ io.on('connection', function (socket) {
     socket.on('my other event', function (socket) {
         io.emit('testing', { hello: 'world' });
     });
-    socket.on('requestQueue', function(socket) {
+});
+
+var queueConnection = io.of('/queue').on('connection', function(socket) {
+	console.log('Queueing Connection made');
+	socket.on('requestQueue', function(socket) {
     	$id = (Math.random() * 10) + 1;
-    	console.log("Queueing connection " + $id + ".")
+    	$id = $id.toFixed(0);
+    	console.log("Queueing connection " + $id + ".");
+    	socket.to('Lobby');
     	io.emit('queueRequestAccepted', {id: $id});
     });
 });
