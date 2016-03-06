@@ -9,8 +9,8 @@ var PlayContent = React.createClass({
     },
     requestQueue: function(){
         var that = this;
-        socket.emit('requestQueue');
-        socket.on('queueRequestAccepted',function(data){
+        queueSocket.emit('requestQueue');
+        queueSocket.on('queueRequestAccepted',function(data){
             console.log('queueRequestAccepted received');
             that.setState({inQueue:'true'});
             that.setState({queueId:data.id});
@@ -23,6 +23,7 @@ var PlayContent = React.createClass({
                 <h4><a className="purple-text darken-2" href="javascript:void(0)" onClick={this.requestQueue}>Connect</a></h4>
                 <p className="flow-text">Connected to queue: {this.state.inQueue}</p>
                 <p className="flow-text">Queue Id: {this.state.queueId}</p>
+                <QueueTimer inQueue={this.state.inQueue} />
             </div>
         )
     }
