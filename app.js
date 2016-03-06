@@ -33,7 +33,7 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     	console.log("Queueing connection " + $id + ".");
     	io.of('/queue').emit('queueRequestAccepted', {id: $id, name: $data});
     	queue.push({id: $id, name: $data});
-    	io.of('/queue').broadcast(queue.length);
+    	io.of('/queue').broadcast.emit(queue.length);
     	startGames();
     });
 });
