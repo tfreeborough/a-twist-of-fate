@@ -25,7 +25,12 @@ var PlayContent = React.createClass({
                     that.setState({queueId: data.id.replace('/queue#','')});
                 });
             }else if(this.state.inQueue == 'true'){
-
+                queueSocket.emit('requestQueueCancel',{id:this.state.queueId});
+                queueSocket.on('requestQueueCancelAccepted', function (data) {
+                    that.setState({queueText:'Queue'});
+                    that.setState({inQueue: 'false'});
+                    that.setState({queueId:''});
+                });
             }
         }else{
             alert('Please enter something for your username');
@@ -33,6 +38,7 @@ var PlayContent = React.createClass({
     },
     componentDidMount: function(){
         var that = this;
+        queueSocket.emit('requestQueueClientCount');
         queueSocket.on('queueClientCount', function (data) {
             console.log(data);
             that.setState({queueConnections:data.connections});
