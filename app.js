@@ -49,7 +49,7 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     	
     });
     socket.on('requestQueueClientCount', function(data) {
-    	socket.emit('queueClientCount', {connections: queue.length});
+    	socket.emit('queueClientCount', {connections: $queue.length});
     });
 });
 
