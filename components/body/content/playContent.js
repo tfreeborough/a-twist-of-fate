@@ -34,24 +34,34 @@ var PlayContent = React.createClass({
                 });
             }
         }else{
-            alert('Please enter something for your username');
+            venti.trigger('promptForUsername');
         }
+    },
+    programmaticallyLeaveQueue: function(){
+        this.setState({queueText:'Queue'});
+        this.setState({inQueue: 'false'});
+        this.setState({queueId:''});
     },
     componentDidMount: function(){
         var that = this;
         queueSocket.emit('requestQueueClientCount');
         queueSocket.on('queueClientCount', function (data) {
-            console.log(data);
             that.setState({queueConnections:data.connections});
         });
+        /*
+        Bind this event in the case that a user is currently queuing but wants to change page and leave the queue, called from <QueueLeaveModal />
+         */
+        venti.on('programmaticallyLeaveQueue',this.programmaticallyLeaveQueue);
     },
     render: function(){
         if(this.props.connection) {
             return (
                 <div>
                     <p className="flow-text">Please enter your username and then click 'Click to Queue'.</p>
-                    <input type="text" onChange={this.updateQueueName}/>
-                    <span>This is the username others will see: {this.state.queueName}</span>
+                    <div className="input-field">
+                        <input id="queue-name" placeholder="Enter your username here:" type="text" maxLength="16" length="16" onChange={this.updateQueueName}/>
+                    </div>
+                    <span>This is the username others will see: <strong>{this.state.queueName}</strong></span>
 
                     <div className="queue-button">
                         <a href="javascript:void(0)" onClick={this.requestQueue}
@@ -63,6 +73,7 @@ var PlayContent = React.createClass({
                         </a>
                     </div>
                     <QueueInformation usersInQueue={this.state.queueConnections} currentlyQueuing={this.state.inQueue}/>
+                    <PromptUsernameModal />
                 </div>
             )
         }else{
