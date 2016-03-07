@@ -39,7 +39,9 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     socket.on('requestQueueCancel', function(data) {
     	$id = data.id;
     	$i = 0;
+    	console.log($id);
     	$queue.forEach(function (element, index, array) {
+    		console.log(element);
     		if (element == $id) {
     			$queue.slice($i, 1);
     			socket.emit('requestQueueCancelAccepted', {id: $id});
