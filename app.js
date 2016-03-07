@@ -4,6 +4,7 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var $queue = [];
+var $chatRooms = {global: [];
 
 server.listen(80);
 
@@ -22,6 +23,30 @@ io.on('connection', function (socket) {
     socket.on('my other event', function (socket) {
         io.emit('testing', { hello: 'world' });
     });
+    socket.on('joinChatEvent', function(data) {
+	console.log('Joining Chat');
+	if ($chatRooms.hasOwnProperty(data.room)) {
+		socket.join(data.room);
+		socket.emit('joinChatEventAccepted', {});
+		io.to(data.room).emit('clientJoinEvent', {name: data.name});
+		$chatRooms.push({name: data.name, id: data.id});
+	} else {
+		socket.emit('joinChatEventDenied', {msg: 'Bad Room'});
+	}
+	});
+	socket.on('leaveChatEvent', function(data) {
+		$i = 0;
+		$chatRooms[data.room].forEach(function(element, index, array) {
+			if (element.id == data.id) {
+				$chatRooms[data.room].splice($i, 1);
+				socket.emit('leaveChatEventAccepted', {});
+			}
+			$i++;
+		});
+	});
+	socket.on('sendMessageEvent', function(data) {
+		io.to(data.room).emit('newChatMessageEvent', {name: data.name, msg: data.msg, time: time()})
+	});
 });
 
 var queueConnection = io.of('/queue').on('connection', function(socket) {
