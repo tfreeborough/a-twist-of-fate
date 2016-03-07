@@ -31,7 +31,7 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     	$id = (Math.random() * 10) + 1;
     	$id = $id.toFixed(0);
     	console.log("Queueing connection " + $id + ".");
-    	socket.emit('queueRequestAccepted', {id: $id, name: $data, socketObj: socket});
+    	socket.emit('queueRequestAccepted', {id: $id, name: $data, socketObj: socket.id});
     	queue.push({id: $id, name: $data});
     	socket.broadcast.emit('queueClientCount', {connections: queue.length});
     	io.of('/queue').emit('queueClientCount', {connections: queue.length});
