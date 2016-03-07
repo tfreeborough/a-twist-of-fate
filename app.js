@@ -3,7 +3,7 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-var queue = [];
+var $queue = [];
 
 server.listen(80);
 
@@ -31,10 +31,25 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     	$id = socket.id.replace('/queue#', '');
     	console.log("Queueing connection " + $id + ".");
     	socket.emit('queueRequestAccepted', {id: $id, name: $data});
-    	queue.push({id: $id, name: $data});
+    	$queue.push({id: $id, name: $data});
     	socket.broadcast.emit('queueClientCount', {connections: queue.length});
     	io.of('/queue').emit('queueClientCount', {connections: queue.length});
     	startGames();
+    });
+    socket.on('requestQueueCancel', function(data) {
+    	$id = data.id;
+    	$i = 0;
+    	$queue.forEach(element, value. array) {
+    		if (value == $id) {
+    			$queue.slice($i, 1);
+    			socket.emit('requestQueueCancelAccepted', {id: $id});
+    		}
+    		$i++;
+    	}
+    	
+    });
+    socket.on('requestQueueClientCount', function(data) {
+    	socket.emit('requestQuietClientCountAccepted', {connections: queue.length});
     });
 });
 
