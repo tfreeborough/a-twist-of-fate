@@ -30,6 +30,9 @@ io.on('connection', function (socket) {
 		socket.emit('joinChatEventAccepted', {});
 		io.to(data.room).emit('clientJoinEvent', {name: data.name});
 		$chatRooms.push({name: data.name, id: data.id});
+		socket.on('sendMessageEvent', function(data) {
+			io.to(data.room).emit('newChatMessageEvent', {name: data.name, msg: data.msg, time: time()})
+		});
 	} else {
 		socket.emit('joinChatEventDenied', {msg: 'Bad Room'});
 	}
@@ -43,9 +46,6 @@ io.on('connection', function (socket) {
 			}
 			$i++;
 		});
-	});
-	socket.on('sendMessageEvent', function(data) {
-		io.to(data.room).emit('newChatMessageEvent', {name: data.name, msg: data.msg, time: time()})
 	});
 });
 
