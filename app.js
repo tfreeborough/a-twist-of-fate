@@ -39,7 +39,7 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     socket.on('requestQueueCancel', function(data) {
     	$id = data.id;
     	$i = 0;
-    	$queue.forEach(element, value. array) {
+    	$queue.forEach(element, value, array) {
     		if (value == $id) {
     			$queue.slice($i, 1);
     			socket.emit('requestQueueCancelAccepted', {id: $id});
@@ -49,7 +49,7 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     	
     });
     socket.on('requestQueueClientCount', function(data) {
-    	socket.emit('requestQuietClientCountAccepted', {connections: queue.length});
+    	socket.emit('queueClientCount', {connections: queue.length});
     });
 });
 
