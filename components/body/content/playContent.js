@@ -22,13 +22,16 @@ var PlayContent = React.createClass({
                 that.setState({inQueue: 'true'});
                 that.setState({queueId: data.id});
             });
-
-            queueSocket.on('queueClientCount', function (data) {
-                that.setState({queueConnections:data.connections});
-            });
         }else{
             alert('Please enter something for your username');
         }
+    },
+    componentDidMount: function(){
+        var that = this;
+        queueSocket.on('queueClientCount', function (data) {
+            console.log(data);
+            that.setState({queueConnections:data.connections});
+        });
     },
     render: function(){
         return(
