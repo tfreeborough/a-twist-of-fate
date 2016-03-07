@@ -30,7 +30,7 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
 		$data = data.username;
     	$id = socket.id.replace('/queue#', '');
     	console.log("Queueing connection " + $id + ".");
-    	socket.emit('queueRequestAccepted', {id: $id, name: $data, socketObj: socket.id});
+    	socket.emit('queueRequestAccepted', {id: $id, name: $data});
     	queue.push({id: $id, name: $data});
     	socket.broadcast.emit('queueClientCount', {connections: queue.length});
     	io.of('/queue').emit('queueClientCount', {connections: queue.length});
