@@ -22,7 +22,7 @@ var PlayContent = React.createClass({
                     console.log(data);
                     that.setState({queueText:'Leave Queue'});
                     that.setState({inQueue: 'true'});
-                    that.setState({queueId: data.id});
+                    that.setState({queueId: data.id.replace('/queue#','')});
                 });
             }else if(this.state.inQueue == 'true'){
 
