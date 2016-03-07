@@ -37,14 +37,17 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     	startGames();
     });
     socket.on('requestQueueCancel', function(data) {
-    	$id = data.id;
+    	$id = socket.id.replace('/queue#', '');
     	$i = 0;
     	console.log($id);
     	$queue.forEach(function (element, index, array) {
     		console.log(element);
-    		if (element == $id) {
-    			$queue.slice($i, 1);
+    		if (element.id == $id) {
+    			$queue.splice($i, 1);
+                console.log($queue);
     			socket.emit('requestQueueCancelAccepted', {id: $id});
+                socket.broadcast.emit('queueClientCount', {connections: $queue.length});
+                io.of('/queue').emit('queueClientCount', {connections: $queue.length});
     		}
     		$i++;
     	});

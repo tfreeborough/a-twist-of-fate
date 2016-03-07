@@ -30,6 +30,7 @@ var PlayContent = React.createClass({
                     that.setState({queueText:'Queue'});
                     that.setState({inQueue: 'false'});
                     that.setState({queueId:''});
+                    venti.trigger('resetQueueTimer');
                 });
             }
         }else{
@@ -45,25 +46,32 @@ var PlayContent = React.createClass({
         });
     },
     render: function(){
-        return(
-            <div>
-                <p className="flow-text">Please enter your name and then click 'Click to Queue'.</p>
-                <input type="text" onChange={this.updateQueueName} />
-                <span>This is the username others will see: {this.state.queueName}</span>
-                <div className="queue-button">
-                    <a href="javascript:void(0)" onClick={this.requestQueue} className="waves-effect waves-light btn-large purple darken-2">
-                        <div className="queue-button-inner">
-                            <span>{this.state.queueText}</span>
-                            <i className="medium material-icons">av_timer</i>
-                        </div>
-                    </a>
+        if(this.props.connection) {
+            return (
+                <div>
+                    <p className="flow-text">Please enter your username and then click 'Click to Queue'.</p>
+                    <input type="text" onChange={this.updateQueueName}/>
+                    <span>This is the username others will see: {this.state.queueName}</span>
+
+                    <div className="queue-button">
+                        <a href="javascript:void(0)" onClick={this.requestQueue}
+                           className="waves-effect waves-light btn-large purple darken-2">
+                            <div className="queue-button-inner">
+                                <span>{this.state.queueText}</span>
+                                <i className="medium material-icons">av_timer</i>
+                            </div>
+                        </a>
+                    </div>
+                    <QueueInformation usersInQueue={this.state.queueConnections} currentlyQueuing={this.state.inQueue}/>
                 </div>
-
-                <p className="flow-text">Users in queue: {this.state.queueConnections}</p>
-                <p className="flow-text">Queue Id: {this.state.queueId}</p>
-
-                <QueueTimer inQueue={this.state.inQueue} />
-            </div>
-        )
+            )
+        }else{
+            return (
+                <div>
+                    <h3>You are currently not connected to the server...</h3>
+                    <p className="flow-text">Play will become available once you regain your connection to the server.</p>
+                </div>
+            )
+        }
     }
 })

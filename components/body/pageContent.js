@@ -8,7 +8,7 @@ var PageContent = React.createClass({
         return(
             <div id="page-content" className="container white-text">
                 <h1>&gt; {this.props.page}</h1>
-                <ContentWrapper page={this.props.page} />
+                <ContentWrapper page={this.props.page} connection={this.props.connection} />
             </div>
         )
     }

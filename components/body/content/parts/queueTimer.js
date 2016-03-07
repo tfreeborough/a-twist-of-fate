@@ -7,18 +7,21 @@ var QueueTimer = React.createClass({
             timeInQueue:0
         })
     },
-    componentWillReceiveProps: function(props){
-        if(this.props.inQueue == 'true') {
-            var that = this;
-            /*
-            var queueTiming = setInterval(function () {
-                that.setState({timeInQueue: (that.state.timeInQueue + 1)})
-            }, 1000);
-            */
-        }
+    resetQueueTimer: function(){
+        this.setState({timeInQueue:0});
+    },
+    componentDidMount: function(){
+        var that = this;
+        var queueTiming = setInterval(function () {
+            if(that.props.currentlyQueuing == 'true') {
+                that.setState({timeInQueue: (that.state.timeInQueue + 1)});
+            }
+        }, 1000);
+
+        venti.on('resetQueueTimer',this.resetQueueTimer);
     },
     render: function(){
-        if(this.props.inQueue == 'true'){
+        if(this.props.currentlyQueuing == 'true'){
             return(
                 <div>
                     Time in queue: {this.state.timeInQueue} seconds
