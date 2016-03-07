@@ -32,8 +32,8 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     	console.log("Queueing connection " + $id + ".");
     	socket.emit('queueRequestAccepted', {id: $id, name: $data});
     	$queue.push({id: $id, name: $data});
-    	socket.broadcast.emit('queueClientCount', {connections: queue.length});
-    	io.of('/queue').emit('queueClientCount', {connections: queue.length});
+    	socket.broadcast.emit('queueClientCount', {connections: $queue.length});
+    	io.of('/queue').emit('queueClientCount', {connections: $queue.length});
     	startGames();
     });
     socket.on('requestQueueCancel', function(data) {
