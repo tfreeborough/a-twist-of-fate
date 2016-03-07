@@ -6,7 +6,8 @@ var PlayContent = React.createClass({
             inQueue:'false',
             queueId:'',
             queueName:'',
-            queueConnections:0
+            queueConnections:0,
+            queueText:'Queue'
         })
     },
     updateQueueName: function(event){
@@ -15,13 +16,17 @@ var PlayContent = React.createClass({
     requestQueue: function(){
         if(this.state.queueName != '') {
             var that = this;
-            queueSocket.emit('requestQueue', {username: this.state.queueName});
-            queueSocket.on('queueRequestAccepted', function (data) {
-                console.log('queueRequestAccepted received');
-                console.log(data);
-                that.setState({inQueue: 'true'});
-                that.setState({queueId: data.id});
-            });
+            if(this.state.inQueue == 'false') {
+                queueSocket.emit('requestQueue', {username: this.state.queueName});
+                queueSocket.on('queueRequestAccepted', function (data) {
+                    console.log(data);
+                    that.setState({queueText:'Leave Queue'});
+                    that.setState({inQueue: 'true'});
+                    that.setState({queueId: data.id});
+                });
+            }else if(this.state.inQueue == 'true'){
+
+            }
         }else{
             alert('Please enter something for your username');
         }
@@ -42,7 +47,7 @@ var PlayContent = React.createClass({
                 <div className="queue-button">
                     <a href="javascript:void(0)" onClick={this.requestQueue} className="waves-effect waves-light btn-large purple darken-2">
                         <div className="queue-button-inner">
-                            <span>Queue</span>
+                            <span>{this.state.queueText}</span>
                             <i className="medium material-icons">av_timer</i>
                         </div>
                     </a>
