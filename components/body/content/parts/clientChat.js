@@ -5,19 +5,25 @@ var ClientChat = React.createClass({
     currentlyRequestedRoom:'',
     getInitialState: function(){
         return({
-            roomsAvailable: {}
+            roomsAvailable: {},
+            lastError:''
         })
     },
     chatListResponse: function(data){
         this.setState({roomsAvailable:data.rooms});
     },
     checkForUsername: function(event){
+        /*
+        Triggered when a user clicks to join a room, we check to see if the current username they entered
+         */
         this.currentlyRequestedRoom = event.currentTarget.getAttribute('data-name');
         venti.trigger('requestCurrentUsername');
     },
     checkForUsernameResponse: function(data){
+        /*
+        If no username has been set throw an error, else send a request to join the chat room.
+         */
         if(data.username.length > 0){
-            console.log("You may join "+this.currentlyRequestedRoom);
             socket.emit('requestToJoinChat',{
                 room:this.currentlyRequestedRoom,
                 name:data.username,
@@ -28,13 +34,21 @@ var ClientChat = React.createClass({
         }
     },
     requestToJoinAccepted: function(data){
-        console.log('your request to join has been accepted');
+        /*
+        If the request to join a room is accepted, load up a chat window
+         */
+        venti.trigger('activateChatPanel');
     },
     requestToJoinDenied: function(data){
-        console.log('your request to join has been denied. Reason: '+data.msg);
+        /*
+        If the request to join is denied, throw an error modal in <ClientChatErrorModal />
+         */
+        this.setState({lastError:data.msg});
+        venti.trigger('showClientChatError',{error:data.msg});
     },
     componentDidMount: function(){
         socket.emit('requestChatRoomList');
+
         socket.on('requestChatRoomListResponse', this.chatListResponse);
         socket.on('requestToJoinChatAccepted', this.requestToJoinAccepted);
         socket.on('requestToJoinChatDenied', this.requestToJoinDenied);

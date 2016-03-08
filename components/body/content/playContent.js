@@ -84,7 +84,9 @@ var PlayContent = React.createClass({
                     </div>
                     <QueueInformation usersInQueue={this.state.queueConnections} currentlyQueuing={this.state.inQueue}/>
                     <PromptUsernameModal />
+                    <ClientChatErrorModal />
                     <ClientChat />
+                    <ChatBox name={this.state.queueName} />
                 </div>
             )
         }else{
