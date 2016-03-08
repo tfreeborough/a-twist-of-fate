@@ -96,6 +96,17 @@ io.on('connection', function (socket) {
 			$i++;
 		});
 	});
+
+	//	Function for handling chat disconnects
+	socket.on('disconnect', function(data) {
+		$i = 0;
+		$chatRooms[data.room].users.forEach(function(element, index, array) {
+			if (element.id == data.id) {
+				$chatRooms[data.room].users.splice($i, 1);
+			}
+			$i++;
+		});
+	});
 });
 
 //	Function for handling requests to enter the game's matchmaking queue
@@ -144,7 +155,22 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     socket.on('requestQueueClientCount', function(data) {
     	socket.emit('queueClientCount', {connections: $queue.length});
     });
+
+    //	Function for handling queue disconnects
+	socket.on('disconnect', function(data) {
+	$i = 0;
+    $queue.forEach(function (element, index, array) {
+    	//	If user id passed in in queue
+   		if (element.id == data.id) {
+    		$queue.splice($i, 1);
+    	}
+    	$i++;
+    });
 });
+});
+
+
+io.on('disconnect', function(socket) {});
 
 //	Function for matching up sockets to create a game
 function startGames() {
