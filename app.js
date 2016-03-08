@@ -30,21 +30,36 @@ io.on('connection', function (socket) {
         io.emit('testing', { hello: 'world' });
     });
     socket.on('requestChatRoomList', function(data) {
-       socket.emit('requestChatRoomListResponse',{rooms:$chatRooms});
+        socket.emit('requestChatRoomListResponse',{rooms:$chatRooms});
     });
-    socket.on('joinChatEvent', function(data) {
+    socket.on('requestToJoinChat', function(data) {
         console.log('Joining Chat');
         if ($chatRooms.hasOwnProperty(data.room)) {
-            socket.join(data.room);
-            socket.emit('joinChatEventAccepted');
-            io.to(data.room).emit('clientJoinEvent', {name: data.name});
-            $chatRooms[data.room]['users'].push({name: data.name, id: data.id});
-            console.log($chatRooms);
-            socket.on('sendMessageEvent', function(data) {
-                io.to(data.room).emit('newChatMessageEvent', {name: data.name, msg: data.msg, time: time()})
+            var userAlreadyInChat = false;
+            $chatRooms[data.room]['users'].forEach(function (element, index, array) {
+                if(element.id == socket.id.replace('/#','')){
+                    userAlreadyInChat = true;
+                }
             });
+            if(!userAlreadyInChat) {
+                $chatRooms[data.room]['users'].push({name: data.name, id: data.id});
+                socket.join(data.room);
+                socket.emit('requestToJoinChatAccepted');
+                io.to(data.room).emit('clientJoinEvent', {room: data.room, name: data.name});
+                console.log($chatRooms);
+                socket.on('sendMessageEvent', function (data) {
+                    io.to(data.room).emit('newChatMessageEvent', {
+                        room: data.room,
+                        name: data.name,
+                        msg: data.msg,
+                        time: time()
+                    })
+                });
+            }else{
+                socket.emit('requestToJoinChatDenied', {msg: 'You are already in this chat room'});
+            }
         } else {
-            socket.emit('joinChatEventDenied', {msg: 'Bad Room'});
+            socket.emit('requestToJoinChatDenied', {msg: 'Bad Room'});
         }
 	});
 	socket.on('leaveChatEvent', function(data) {

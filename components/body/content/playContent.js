@@ -43,6 +43,9 @@ var PlayContent = React.createClass({
         this.setState({inQueue: 'false'});
         this.setState({queueId:''});
     },
+    fetchCurrentUsername: function(){
+        venti.trigger('requestCurrentUsernameResponse',{username:this.state.queueName})
+    },
     componentDidMount: function(){
         var that = this;
         queueSocket.emit('requestQueueClientCount');
@@ -53,9 +56,12 @@ var PlayContent = React.createClass({
         Bind this event in the case that a user is currently queuing but wants to change page and leave the queue, called from <QueueLeaveModal />
          */
         venti.on('programmaticallyLeaveQueue',this.programmaticallyLeaveQueue);
+        venti.on('requestCurrentUsername', this.fetchCurrentUsername);
     },
     componentWillUnmount: function(){
         queueSocket.removeAllListeners("queueRequestAccepted");
+        venti.off('programmaticallyLeaveQueue',this.programmaticallyLeaveQueue);
+        venti.off('requestCurrentUsername', this.fetchCurrentUsername);
     },
     render: function(){
         if(this.props.connection) {
@@ -65,7 +71,7 @@ var PlayContent = React.createClass({
                     <div className="input-field">
                         <input id="queue-name" placeholder="Enter your username here:" type="text" maxLength="16" length="16" onChange={this.updateQueueName}/>
                     </div>
-                    <span>This is the username others will see: <strong>{this.state.queueName}</strong></span>
+                    <span>This is the username others will see: <strong className="displayedUsername">{this.state.queueName}</strong></span>
 
                     <div className="queue-button">
                         <a href="javascript:void(0)" onClick={this.requestQueue}
