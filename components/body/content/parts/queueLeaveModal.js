@@ -1,5 +1,6 @@
 /** @jsx React.DOM */
 
+
 var QueueLeaveModal = React.createClass({
     getInitialState: function(){
         return({
@@ -9,24 +10,35 @@ var QueueLeaveModal = React.createClass({
     },
     componentDidMount: function(){
         venti.on('changePageError',this.changePageError);
+        venti.on('commitToPageChange',this.commitToPageChange);
+        this.setState({designatedPath:''});
+    },
+    componentWillUnmount: function(){
+        queueSocket.removeAllListeners("requestQueueCancelAccepted");
+        venti.off('changePageError',this.changePageError);
+        venti.off('commitToPageChange',this.commitToPageChange);
     },
     changePageError: function(data){
         this.showModal();
         this.setState({designatedPath:data.page})
     },
+    commitToPageChange: function(){
+        if(this.state.designatedPath != '') {
+            this.hideModal();
+            venti.trigger('programmaticallyLeaveQueue');
+            venti.trigger('resetQueueTimer');
+            venti.trigger('changePage', {
+                page: this.state.designatedPath.toLowerCase(),
+                originalName: this.state.designatedPath
+            });
+
+        }
+    },
     triggerDesignatedPath: function(){
         queueSocket.emit('requestQueueCancel',{id:queueSocket.id});
-        var that = this;
+
         queueSocket.on('requestQueueCancelAccepted', function (data) {
-            if(that.state.designatedPath != '') {
-                venti.trigger('programmaticallyLeaveQueue');
-                venti.trigger('resetQueueTimer');
-                venti.trigger('changePage', {
-                    page: that.state.designatedPath.toLowerCase(),
-                    originalName: that.state.designatedPath
-                });
-            }
-            console.log('Changing designated path');
+            venti.trigger('commitToPageChange');
         });
     },
     showModal: function(){
@@ -37,6 +49,7 @@ var QueueLeaveModal = React.createClass({
     },
     hideModal: function(){
         $('#queue-leave-modal').closeModal();
+        $('.lean-overlay').remove();
     },
     render: function(){
             return (
@@ -50,8 +63,8 @@ var QueueLeaveModal = React.createClass({
                         </p>
                     </div>
                     <div className="modal-footer">
-                        <a href="javascript:void(0)" onClick={this.triggerDesignatedPath} className=" modal-action modal-close waves-effect waves-green btn-flat">Yes, please leave the queue and take me to {this.state.designatedPath}</a>
-                        <a href="javascript:void(0)" className=" modal-action modal-close waves-effect waves-red btn-flat">No, I'd like to remain in the queue</a>
+                        <a href="javascript:void(0)" onClick={this.triggerDesignatedPath} className=" modal-action waves-effect waves-green btn-flat">Yes, please leave the queue and take me to {this.state.designatedPath}</a>
+                        <a href="javascript:void(0)" onClick={this.hideModal} className=" modal-action waves-effect waves-red btn-flat">No, I'd like to remain in the queue</a>
                     </div>
                 </div>
             )

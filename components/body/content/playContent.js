@@ -14,12 +14,13 @@ var PlayContent = React.createClass({
         this.setState({queueName:event.target.value.replace(/[^a-zA-Z]/g,'')})
     },
     requestQueue: function(){
+        queueSocket.removeAllListeners("queueRequestAccepted");
+        queueSocket.removeAllListeners("queueRequestCancelAccepted");
         if(this.state.queueName != '') {
             var that = this;
             if(this.state.inQueue == 'false') {
                 queueSocket.emit('requestQueue', {username: this.state.queueName});
                 queueSocket.on('queueRequestAccepted', function (data) {
-                    console.log(data);
                     that.setState({queueText:'Leave Queue'});
                     that.setState({inQueue: 'true'});
                     that.setState({queueId: data.id.replace('/queue#','')});
@@ -52,6 +53,9 @@ var PlayContent = React.createClass({
         Bind this event in the case that a user is currently queuing but wants to change page and leave the queue, called from <QueueLeaveModal />
          */
         venti.on('programmaticallyLeaveQueue',this.programmaticallyLeaveQueue);
+    },
+    componentWillUnmount: function(){
+        queueSocket.removeAllListeners("queueRequestAccepted");
     },
     render: function(){
         if(this.props.connection) {

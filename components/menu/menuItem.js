@@ -10,7 +10,6 @@ var MenuItem = React.createClass({
         if(this.state.currentlyQueuing == 'false') {
             venti.trigger('changePage', {page: this.props.name.toLowerCase(), originalName: this.props.name});
         }else{
-            //alert('You cannot change page whilst in the queue, please leave before going somewhere else...');
             venti.trigger('changePageError',{page:this.props.name});
         }
     },
