@@ -82,6 +82,41 @@
     font-size: 2.5rem!important;
 }
 
+#client-chat{
+    position: fixed;
+    bottom: 0;
+    right: 94px;
+    padding: 20px;
+    height: 90px;
+    width: 84px;
+    border-radius: 5px 5px 0px 0px;
+    background: rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+#client-chat li{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 10px;
+}
+
+#client-chat .client-chat-icon{
+    padding:0px;
+    right: 108px;
+    bottom: 17px;
+}
+
+#client-chat .btn-large i{
+    font-size: 3rem;
+}
+
+#client-chat ul a{
+    border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: auto !important;
+}
+
 @media screen and (max-width: 800px) {
     html {
         background: url("/assets/Twisted_Fate.jpg") #000 no-repeat center center fixed;

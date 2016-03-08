@@ -4,7 +4,12 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var $queue = [];
-var $chatRooms = {global: [];
+var $chatRooms = {
+    global: {
+        name: "Global",
+        users: []
+    }
+};
 
 server.listen(80);
 
@@ -13,6 +18,7 @@ app.use("/components",express.static(__dirname + '/components'));
 app.use("/external_scripts",express.static(__dirname + '/external_scripts'));
 app.use("/styles",express.static(__dirname + '/styles'));
 app.use("/assets",express.static(__dirname + '/assets'));
+app.use("/font",express.static(__dirname + '/font'));
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
@@ -23,19 +29,23 @@ io.on('connection', function (socket) {
     socket.on('my other event', function (socket) {
         io.emit('testing', { hello: 'world' });
     });
+    socket.on('requestChatRoomList', function(data) {
+       socket.emit('requestChatRoomListResponse',{rooms:$chatRooms});
+    });
     socket.on('joinChatEvent', function(data) {
-	console.log('Joining Chat');
-	if ($chatRooms.hasOwnProperty(data.room)) {
-		socket.join(data.room);
-		socket.emit('joinChatEventAccepted', {});
-		io.to(data.room).emit('clientJoinEvent', {name: data.name});
-		$chatRooms.push({name: data.name, id: data.id});
-		socket.on('sendMessageEvent', function(data) {
-			io.to(data.room).emit('newChatMessageEvent', {name: data.name, msg: data.msg, time: time()})
-		});
-	} else {
-		socket.emit('joinChatEventDenied', {msg: 'Bad Room'});
-	}
+        console.log('Joining Chat');
+        if ($chatRooms.hasOwnProperty(data.room)) {
+            socket.join(data.room);
+            socket.emit('joinChatEventAccepted');
+            io.to(data.room).emit('clientJoinEvent', {name: data.name});
+            $chatRooms[data.room]['users'].push({name: data.name, id: data.id});
+            console.log($chatRooms);
+            socket.on('sendMessageEvent', function(data) {
+                io.to(data.room).emit('newChatMessageEvent', {name: data.name, msg: data.msg, time: time()})
+            });
+        } else {
+            socket.emit('joinChatEventDenied', {msg: 'Bad Room'});
+        }
 	});
 	socket.on('leaveChatEvent', function(data) {
 		$i = 0;
