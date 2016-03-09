@@ -29,6 +29,8 @@ var ChatBox = React.createClass({
         Triggered when a new message is recieved to the chat room
          */
         var array = this.state.messages;
+        var $now = new Date();
+        data.time = pad($now.getHours(),2)+':'+pad($now.getMinutes(),2)+':'+pad($now.getSeconds(),2);
         array.push(data);
         this.setState({messages:array});
         console.log(this.state.messages);
