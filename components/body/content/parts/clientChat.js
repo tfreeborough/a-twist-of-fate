@@ -17,11 +17,38 @@ var ClientChat = React.createClass({
         Triggered when a user clicks to join a room, we check to see if the current username they entered
          */
         this.currentlyRequestedRoom = event.currentTarget.getAttribute('data-name');
+        /*
+        Check if chatbox is showing as we will want to toggle it depending on if user is subscribed to the service
+         */
+        venti.trigger('isChatboxShowing');
+    },
+    chatboxShowingResponse: function(data){
+        /*
+        After a response from <ChatBox /> determine if user needs to be subscribed or if they are already subscribed and need the chat opening
+         */
+        if(data.showing){
+            this.chatboxShowing();
+        }else{
+            this.chatboxNotShowing();
+        }
+    },
+    chatboxShowing: function(){
+        /*
+        Triggers a bound event in <ChatBox /> to open the
+         */
+        venti.trigger('deactivateChatPanel');
+    },
+    chatboxNotShowing: function(){
+        /*
+        Trigger event to check if user has username and then proceed to request chat join
+         */
         venti.trigger('requestCurrentUsername');
     },
     checkForUsernameResponse: function(data){
         /*
         If no username has been set throw an error, else send a request to join the chat room.
+
+        Follows on from this.chatboxNotShowing
          */
         if(data.username.length > 0){
             socket.emit('requestToJoinChat',{
@@ -30,6 +57,9 @@ var ClientChat = React.createClass({
                 id:socket.id
             });
         }else{
+            /*
+            Trigger promptUsernameModal
+             */
             venti.trigger('promptForUsername');
         }
     },
@@ -37,6 +67,7 @@ var ClientChat = React.createClass({
         /*
         If the request to join a room is accepted, load up a chat window
          */
+        venti.trigger('setCurrentChatroom',{room:this.currentlyRequestedRoom});
         venti.trigger('activateChatPanel');
     },
     requestToJoinDenied: function(data){
@@ -53,12 +84,14 @@ var ClientChat = React.createClass({
         socket.on('requestToJoinChatAccepted', this.requestToJoinAccepted);
         socket.on('requestToJoinChatDenied', this.requestToJoinDenied);
         venti.on('requestCurrentUsernameResponse',this.checkForUsernameResponse);
+        venti.on('chatboxShowingResponse',this.chatboxShowingResponse);
     },
     componentWillUnmount: function(){
         socket.removeListener('requestChatRoomListResponse', this.chatListResponse);
         socket.removeListener('requestToJoinChatAccepted', this.requestToJoinAccepted);
         socket.removeListener('requestToJoinChatDenied', this.requestToJoinDenied);
         venti.off('requestCurrentUsernameResponse',this.checkForUsernameResponse);
+        venti.off('chatboxShowingResponse',this.chatboxShowingResponse);
     },
     render: function(){
         var rooms = this.state.roomsAvailable;

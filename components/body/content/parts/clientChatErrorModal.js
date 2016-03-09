@@ -13,8 +13,15 @@ var ClientChatErrorModal = React.createClass({
         venti.off('showClientChatError',this.showClientChatError);
     },
     showClientChatError: function(data){
-        this.setState({error:data.error});
-        $('#client-chat-error-modal').openModal();
+        switch(data.error){
+            case 'exists':
+                venti.trigger('activateChatPanel');
+                break;
+            default:
+                this.setState({error:data.error});
+                $('#client-chat-error-modal').openModal();
+                break;
+        }
     },
     hideModal: function(){
         $('#client-chat-error-modal').closeModal();
