@@ -151,12 +151,27 @@
 
 .chatbox-active-chat .send-message{
     position: absolute;
-    bottom: 0;
+    bottom: 10px;
     right: 0;
     left: 0;
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.manual-chat-options{
+    position: absolute;
+    bottom: 4px;
+    font-size: 0.8rem;
+    left: 10px;
+    right: 10px;
+    text-align: right;
+}
+
+.manual-chat-options span {
+    margin-left: 10px;
+    opacity:0.8;
+}
+
 
 textarea {
     -moz-box-sizing: border-box;
@@ -178,6 +193,19 @@ textarea {
     overflow: auto;
     word-break: break-word;
     padding-right: 10px;
+}
+
+.unseen-messages{
+    position: absolute;
+    top: 20px;
+    right: 17px;
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 
 @media screen and (max-width: 800px) {

@@ -6,7 +6,8 @@ var ClientChat = React.createClass({
     getInitialState: function(){
         return({
             roomsAvailable: {},
-            lastError:''
+            lastError:'',
+            unseenMessages:0
         })
     },
     chatListResponse: function(data){
@@ -69,6 +70,7 @@ var ClientChat = React.createClass({
          */
         venti.trigger('setCurrentChatroom',{room:this.currentlyRequestedRoom});
         venti.trigger('activateChatPanel');
+        socket.emit('requestChatRoomList');
     },
     requestToJoinDenied: function(data){
         /*
@@ -76,6 +78,12 @@ var ClientChat = React.createClass({
          */
         this.setState({lastError:data.msg});
         venti.trigger('showClientChatError',{error:data.msg});
+    },
+    incrementUnseenMessages: function(){
+        this.setState({unseenMessages:this.state.unseenMessages+1});
+    },
+    clearUnseenMessages: function(){
+        this.setState({unseenMessages:0});
     },
     componentDidMount: function(){
         socket.emit('requestChatRoomList');
@@ -85,6 +93,8 @@ var ClientChat = React.createClass({
         socket.on('requestToJoinChatDenied', this.requestToJoinDenied);
         venti.on('requestCurrentUsernameResponse',this.checkForUsernameResponse);
         venti.on('chatboxShowingResponse',this.chatboxShowingResponse);
+        venti.on('addUnseenMessageCounter', this.incrementUnseenMessages);
+        venti.on('clearUnseenMessageCounter', this.clearUnseenMessages);
     },
     componentWillUnmount: function(){
         socket.removeListener('requestChatRoomListResponse', this.chatListResponse);
@@ -92,6 +102,8 @@ var ClientChat = React.createClass({
         socket.removeListener('requestToJoinChatDenied', this.requestToJoinDenied);
         venti.off('requestCurrentUsernameResponse',this.checkForUsernameResponse);
         venti.off('chatboxShowingResponse',this.chatboxShowingResponse);
+        venti.off('addUnseenMessageCounter', this.incrementUnseenMessages);
+        venti.off('clearUnseenMessageCounter', this.clearUnseenMessages);
     },
     render: function(){
         var rooms = this.state.roomsAvailable;
@@ -101,6 +113,7 @@ var ClientChat = React.createClass({
                 <div className="fixed-action-btn horizontal click-to-toggle client-chat-icon none-selectable" title="Join a chat room">
                     <a className="btn-floating btn-large transparent">
                         <i className="large material-icons">chat</i>
+                        <UnseenMessagesCounter count={this.state.unseenMessages} />
                     </a>
                     <ul>
                         {Object.keys(this.state.roomsAvailable).map(function(room) {

@@ -25,6 +25,8 @@ var ChatBox = React.createClass({
         venti.off('deactivateChatPanel',this.setHidden);
         venti.off('isChatboxShowing',this.isShowing);
         socket.removeListener('newChatMessageEvent',this.newChatMessage);
+        socket.removeListener('clientJoinEvent',this.newClientJoined);
+        socket.removeListener('clientLeaveEvent',this.clientLeftChat);
     },
     newChatMessage: function(data){
         /*
@@ -39,7 +41,9 @@ var ChatBox = React.createClass({
         console.log(this.state.messages);
         var log = $('#play-chat-box .messages ul');
         log.animate({ scrollTop: log.prop('scrollHeight')}, 10);
-
+        if(!this.state.showing){
+            venti.trigger('addUnseenMessageCounter');
+        }
     },
     newClientJoined: function(data){
         var array = this.state.messages;
@@ -48,6 +52,7 @@ var ChatBox = React.createClass({
         this.setState({messages:array});
         var log = $('#play-chat-box .messages ul');
         log.animate({ scrollTop: log.prop('scrollHeight')}, 10);
+        socket.emit('requestChatRoomList');
     },
     clientLeftChat: function(data){
         var array = this.state.messages;
@@ -56,12 +61,14 @@ var ChatBox = React.createClass({
         this.setState({messages:array});
         var log = $('#play-chat-box .messages ul');
         log.animate({ scrollTop: log.prop('scrollHeight')}, 10);
+        socket.emit('requestChatRoomList');
     },
     setShowing: function() {
         this.setState({showing: true});
         document.getElementById('chat-box-input').focus();
         var log = $('#play-chat-box .messages ul');
         log.animate({ scrollTop: log.prop('scrollHeight')}, 10);
+        venti.trigger('clearUnseenMessageCounter');
     },
     submitMessage:function(e){
         if (e.which == 13) {
@@ -72,6 +79,11 @@ var ChatBox = React.createClass({
                 message:this.state.currentMessage
             });
         }
+    },
+    manuallyLeaveChat: function(){
+        socket.emit('leaveChatEvent');
+        this.setHidden();
+        socket.emit('requestChatRoomList');
     },
     isShowing: function(){
         venti.trigger('chatboxShowingResponse',{showing:this.state.showing});
@@ -94,6 +106,10 @@ var ChatBox = React.createClass({
                         </div>
                         <div className="send-message">
                             <input id="chat-box-input" className="flow-text" data-autoresize onKeyPress={this.submitMessage} onChange={this.setCurrentMessage} placeholder="enter your message here..."/>
+                        </div>
+                        <div className="manual-chat-options">
+                            <span onClick={this.manuallyLeaveChat}><a className="orange-text accent-4" href="javascript:void(0)">Leave Chat</a></span>
+                            <span onClick={this.setHidden}><a className="orange-text accent-4" href="javascript:void(0)">Close Chat Window</a></span>
                         </div>
                     </div>
                     <div className="subscribed-chats">
