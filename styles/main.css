@@ -139,7 +139,7 @@
     bottom: 0;
     left: 0;
     top: 0;
-    background: rgba(0,0,0,0.8);
+    background: rgba(0,0,0,0.95);
     width: 500px;
     z-index: 1000;
 }
@@ -177,7 +177,6 @@ textarea {
     margin-bottom: 60px;
     overflow: auto;
     word-break: break-word;
-    text-align: justify;
     padding-right: 10px;
 }
 
@@ -193,7 +192,6 @@ textarea {
 @media screen and (max-width: 768px) {
     #play-chat-box{
         bottom: 105px;
-        background: rgba(0,0,0,0.9);
         width:100%;
     }
 }

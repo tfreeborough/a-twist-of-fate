@@ -108,6 +108,7 @@ io.on('connection', function (socket) {
                 if(e.id == $socketId){
                     $chatRooms[value]['users'].splice(i,1);
                     socket.leave(value);
+                    io.to(value).emit('clientLeaveEvent', {room: value, name: e.name});
                 }
             });
         });
@@ -123,6 +124,7 @@ io.on('connection', function (socket) {
                 if(e.id == $socketId){
                     $chatRooms[value]['users'].splice(i,1);
                     socket.leave(value);
+                    io.to(value).emit('clientLeaveEvent', {room: value, name: e.name});
                 }
             });
         });

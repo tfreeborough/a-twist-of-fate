@@ -16,6 +16,8 @@ var ChatBox = React.createClass({
         venti.on('deactivateChatPanel',this.setHidden);
         venti.on('isChatboxShowing',this.isShowing);
         socket.on('newChatMessageEvent',this.newChatMessage);
+        socket.on('clientJoinEvent',this.newClientJoined);
+        socket.on('clientLeaveEvent',this.clientLeftChat);
 
     },
     componentWillUnmount: function(){
@@ -31,6 +33,7 @@ var ChatBox = React.createClass({
         var array = this.state.messages;
         var $now = new Date();
         data.time = pad($now.getHours(),2)+':'+pad($now.getMinutes(),2)+':'+pad($now.getSeconds(),2);
+        data.type = 'message'
         array.push(data);
         this.setState({messages:array});
         console.log(this.state.messages);
@@ -38,9 +41,27 @@ var ChatBox = React.createClass({
         log.animate({ scrollTop: log.prop('scrollHeight')}, 10);
 
     },
+    newClientJoined: function(data){
+        var array = this.state.messages;
+        data.type = 'join';
+        array.push(data);
+        this.setState({messages:array});
+        var log = $('#play-chat-box .messages ul');
+        log.animate({ scrollTop: log.prop('scrollHeight')}, 10);
+    },
+    clientLeftChat: function(data){
+        var array = this.state.messages;
+        data.type = 'leave';
+        array.push(data);
+        this.setState({messages:array});
+        var log = $('#play-chat-box .messages ul');
+        log.animate({ scrollTop: log.prop('scrollHeight')}, 10);
+    },
     setShowing: function() {
         this.setState({showing: true});
         document.getElementById('chat-box-input').focus();
+        var log = $('#play-chat-box .messages ul');
+        log.animate({ scrollTop: log.prop('scrollHeight')}, 10);
     },
     submitMessage:function(e){
         if (e.which == 13) {
@@ -61,7 +82,7 @@ var ChatBox = React.createClass({
     render: function(){
         if(this.state.showing) {
             var messages = this.state.messages.map(function (i) {
-                return (<ChatMessage name={i.name} message={i.msg} time={i.time}/>);
+                return (<ChatMessage name={i.name} room={i.room} message={i.msg} type={i.type} time={i.time}/>);
             });
             return (
                 <div id="play-chat-box">
