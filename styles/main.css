@@ -66,6 +66,7 @@
     width:20%;
     display:inline-block;
     text-align: left;
+    min-width: 200px;
 }
 
 .queue-button-inner{
@@ -140,6 +141,7 @@
     top: 0;
     background: rgba(0,0,0,0.8);
     width: 500px;
+    z-index: 1000;
 }
 
 .chatbox-active-chat{
@@ -185,5 +187,13 @@ textarea {
     }
     #bgvid {
         display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #play-chat-box{
+        bottom: 105px;
+        background: rgba(0,0,0,0.9);
+        width:100%;
     }
 }

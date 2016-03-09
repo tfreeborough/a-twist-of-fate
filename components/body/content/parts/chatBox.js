@@ -38,6 +38,7 @@ var ChatBox = React.createClass({
     },
     setShowing: function() {
         this.setState({showing: true});
+        document.getElementById('chat-box-input').focus();
     },
     submitMessage:function(e){
         if (e.which == 13) {
@@ -69,7 +70,7 @@ var ChatBox = React.createClass({
                             </ul>
                         </div>
                         <div className="send-message">
-                            <input className="flow-text" data-autoresize onKeyPress={this.submitMessage} onChange={this.setCurrentMessage} placeholder="enter your message here..."/>
+                            <input id="chat-box-input" className="flow-text" data-autoresize onKeyPress={this.submitMessage} onChange={this.setCurrentMessage} placeholder="enter your message here..."/>
                         </div>
                     </div>
                     <div className="subscribed-chats">

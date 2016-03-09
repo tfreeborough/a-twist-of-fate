@@ -62,6 +62,9 @@ var PlayContent = React.createClass({
         if($lastUsedUsername != ''){
             this.setState({queueName:$lastUsedUsername});
         }
+
+        document.getElementById('queue-name').focus();
+
         /*
         Bind this event in the case that a user is currently queuing but wants to change page and leave the queue, called from <QueueLeaveModal />
          */
