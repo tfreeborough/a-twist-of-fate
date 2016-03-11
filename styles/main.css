@@ -1,8 +1,12 @@
+body{
+    border: none;
+}
+
 #bgimg {
     position: fixed;
     top: 50%;
     left: 50%;
-    min-width: 100%;
+    min-width: 101%;
     min-height: 100%;
     width: auto;
     height: auto;
@@ -60,6 +64,11 @@
     margin-top:50px;
     margin-bottom:50px;
     text-align: center;
+}
+
+#queue-name{
+    background: rgba(0,0,0,0.4);
+    padding: 10px;
 }
 
 .queue-button a{
@@ -142,6 +151,7 @@
     background: rgba(0,0,0,0.95);
     width: 500px;
     z-index: 1000;
+    border-right: 1px solid #483D4C;
 }
 
 .chatbox-active-chat{
@@ -206,6 +216,38 @@ textarea {
     1px -1px 0 #000,
     -1px 1px 0 #000,
     1px 1px 0 #000;
+}
+
+.headline-wrapper{
+    padding:100px;
+}
+
+.headline-wrapper h2{
+    display:inline-block!important;
+    margin: auto;
+}
+
+.collection.with-header .collection-header{
+    background:rgba(144, 202, 249,0.3)!important;
+    border-bottom:none!important;
+}
+.collection.with-header .collection-item{
+    background:rgba(0,0,0,0.3)!important;
+    border-bottom:none!important;
+    padding-top: 20px!important;
+    padding-bottom: 20px!important;
+}
+
+.collection{
+    border:none!important;
+}
+
+.features{
+    margin-top:100px;
+}
+
+.intro-card{
+    margin-bottom:100px;
 }
 
 @media screen and (max-width: 800px) {

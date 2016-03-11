@@ -41,11 +41,15 @@ var Main = React.createClass({
         /*
         Change active page from menuItem component Click
          */
-        venti.on('changePage',this.changePage)
+        venti.on('changePage',this.changePage);
         /*
         Receive connection info from connectionStatus component
          */
         venti.on('send_connection_to_main',this.updateConnectionStatus);
+    },
+    componentWillUnmount: function(){
+        venti.off('changePage',this.changePage);
+        venti.off('send_connection_to_main',this.updateConnectionStatus);
     },
     render: function(){
         return(
