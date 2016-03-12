@@ -8,6 +8,7 @@ var MenuItem = React.createClass({
     },
     changeActivePage: function(){
         if(this.state.currentlyQueuing == 'false') {
+            socket.emit('leaveChatEvent');
             venti.trigger('changePage', {page: this.props.name.toLowerCase(), originalName: this.props.name});
         }else{
             venti.trigger('changePageError',{page:this.props.name});

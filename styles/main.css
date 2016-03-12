@@ -1,8 +1,12 @@
+body{
+    border: none;
+}
+
 #bgimg {
     position: fixed;
     top: 50%;
     left: 50%;
-    min-width: 100%;
+    min-width: 101%;
     min-height: 100%;
     width: auto;
     height: auto;
@@ -62,10 +66,16 @@
     text-align: center;
 }
 
+#queue-name{
+    background: rgba(0,0,0,0.4);
+    padding: 10px;
+}
+
 .queue-button a{
     width:20%;
     display:inline-block;
     text-align: left;
+    min-width: 200px;
 }
 
 .queue-button-inner{
@@ -133,11 +143,125 @@
     user-select: none;          /* Likely future */
 }
 
+#play-chat-box{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,0.95);
+    width: 500px;
+    z-index: 1000;
+    border-right: 1px solid #483D4C;
+}
+
+.chatbox-active-chat{
+    width: 100%;
+    height: 100%;
+}
+
+.chatbox-active-chat .send-message{
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+    left: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.manual-chat-options{
+    position: absolute;
+    bottom: 4px;
+    font-size: 0.8rem;
+    left: 10px;
+    right: 10px;
+    text-align: right;
+}
+
+.manual-chat-options span {
+    margin-left: 10px;
+    opacity:0.8;
+}
+
+
+textarea {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    resize: none;
+}
+
+.faded{
+    opacity:0.2;
+}
+
+.messages ul{
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 0px;
+    bottom: 0px;
+    margin-bottom: 60px;
+    overflow: auto;
+    word-break: break-word;
+    padding-right: 10px;
+}
+
+.unseen-messages{
+    position: absolute;
+    top: 20px;
+    right: 17px;
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.headline-wrapper{
+    padding:100px;
+}
+
+.headline-wrapper h2{
+    display:inline-block!important;
+    margin: auto;
+}
+
+.collection.with-header .collection-header{
+    background:rgba(144, 202, 249,0.3)!important;
+    border-bottom:none!important;
+}
+.collection.with-header .collection-item{
+    background:rgba(0,0,0,0.3)!important;
+    border-bottom:none!important;
+    padding-top: 20px!important;
+    padding-bottom: 20px!important;
+}
+
+.collection{
+    border:none!important;
+}
+
+.features{
+    margin-top:100px;
+}
+
+.intro-card{
+    margin-bottom:100px;
+}
+
 @media screen and (max-width: 800px) {
     html {
         background: url("/assets/Twisted_Fate.jpg") #000 no-repeat center center fixed;
     }
     #bgvid {
         display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #play-chat-box{
+        bottom: 105px;
+        width:100%;
     }
 }

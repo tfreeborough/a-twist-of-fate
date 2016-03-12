@@ -30,6 +30,16 @@ app.get('/match', function (req, res) {
 
 var queueMatches = setInterval(startGames, 15000);
 
+/*
+Not sure where to put this, needed for padding 0's on the chat messages
+ */
+function pad(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
+
+
 //  Function for handling connections on the server's root namespace
 //	Does not handle queuing or game connections, only chat
 io.on('connection', function (socket) {
@@ -70,20 +80,9 @@ io.on('connection', function (socket) {
                 //	Emit event to the room that a new user is there
                 console.log($chatRooms);
 
-                //	Function for handling message events sent by clients to the room
-                socket.on('sendMessageEvent', function (data) {
-                	//	Emit the message back to other sockets
-                    io.to(data.room).emit('newChatMessageEvent', {
-                        room: data.room,
-                        name: data.name,
-                        msg: data.msg,
-                        time: time()
-                    })
-                });
-
             }else{
             	//	If user is connected return error
-                socket.emit('requestToJoinChatDenied', {msg: 'You are already in this chat room'});
+                socket.emit('requestToJoinChatDenied', {msg: 'exists'});
             }
         } else {
         	//	If room not found emit error message back to the socket
@@ -91,27 +90,50 @@ io.on('connection', function (socket) {
         }
 	});
 
+    //	Function for handling message events sent by clients to the room
+    socket.on('sendMessageEvent', function (data) {
+        //	Emit the message back to other sockets
+        console.log('MESSAGE SENT TO SERVER');
+        var $now = new Date()
+        io.sockets.in(data.room).emit('newChatMessageEvent', {
+            room: data.room,
+            name: data.name,
+            msg: data.message,
+            time: pad($now.getHours(),2)+':'+pad($now.getMinutes(),2)+':'+pad($now.getSeconds(),2)
+        });
+        console.log('MESSAGE SENT');
+    });
+
 	//	Function for handling requests to leave the chat room
-	socket.on('leaveChatEvent', function(data) {
-		$i = 0;
-		$chatRooms[data.room].forEach(function(element, index, array) {
-			if (element.id == data.id) {
-				$chatRooms[data.room].splice($i, 1);
-				socket.emit('leaveChatEventAccepted', {});
-			}
-			$i++;
-		});
+	socket.on('leaveChatEvent', function() {
+        $i = 0;
+        $socketId = socket.id.replace('/#','');
+        Object.keys($chatRooms).map(function(value, index) {
+            $chatRooms[value]['users'].forEach(function(e,i,a){
+                console.log('DISCONNECTING FROM CHAT DUE TO PAGE CHANGE');
+                if(e.id == $socketId){
+                    $chatRooms[value]['users'].splice(i,1);
+                    socket.leave(value);
+                    io.to(value).emit('clientLeaveEvent', {room: value, name: e.name});
+                }
+            });
+        });
 	});
 
 	//	Function for handling chat disconnects
-	socket.on('disconnect', function(data) {
+	socket.on('disconnect', function() {
 		$i = 0;
-		$chatRooms[data.room].users.forEach(function(element, index, array) {
-			if (element.id == data.id) {
-				$chatRooms[data.room].users.splice($i, 1);
-			}
-			$i++;
-		});
+        $socketId = socket.id.replace('/#','');
+        Object.keys($chatRooms).map(function(value, index) {
+            $chatRooms[value]['users'].forEach(function(e,i,a){
+                console.log('DISCONNECTING FROM CHAT DUE TO DISCONNECTION');
+                if(e.id == $socketId){
+                    $chatRooms[value]['users'].splice(i,1);
+                    socket.leave(value);
+                    io.to(value).emit('clientLeaveEvent', {room: value, name: e.name});
+                }
+            });
+        });
 	});
 });
 

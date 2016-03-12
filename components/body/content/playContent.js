@@ -1,5 +1,7 @@
 /** @jsx React.DOM */
 
+var $lastUsedUsername = '';
+
 var PlayContent = React.createClass({
     getInitialState: function(){
         return({
@@ -7,11 +9,13 @@ var PlayContent = React.createClass({
             queueId:'',
             queueName:'',
             queueConnections:0,
-            queueText:'Queue'
+            queueText:'Queue',
+            currentChatroom:''
         })
     },
     updateQueueName: function(event){
         this.setState({queueName:event.target.value.replace(/[^a-zA-Z]/g,'')})
+        $lastUsedUsername = event.target.value.replace(/[^a-zA-Z]/g,'');
     },
     requestQueue: function(){
         queueSocket.removeAllListeners("queueRequestAccepted");
@@ -46,22 +50,31 @@ var PlayContent = React.createClass({
     fetchCurrentUsername: function(){
         venti.trigger('requestCurrentUsernameResponse',{username:this.state.queueName})
     },
+    setCurrentChatroom: function(data){
+       this.setState({currentChatroom:data.room});
+    },
     componentDidMount: function(){
         var that = this;
         queueSocket.emit('requestQueueClientCount');
         queueSocket.on('queueClientCount', function (data) {
             that.setState({queueConnections:data.connections});
         });
+        if($lastUsedUsername != ''){
+            this.setState({queueName:$lastUsedUsername});
+        }
+
         /*
         Bind this event in the case that a user is currently queuing but wants to change page and leave the queue, called from <QueueLeaveModal />
          */
         venti.on('programmaticallyLeaveQueue',this.programmaticallyLeaveQueue);
         venti.on('requestCurrentUsername', this.fetchCurrentUsername);
+        venti.on('setCurrentChatroom', this.setCurrentChatroom);
     },
     componentWillUnmount: function(){
         queueSocket.removeAllListeners("queueRequestAccepted");
         venti.off('programmaticallyLeaveQueue',this.programmaticallyLeaveQueue);
         venti.off('requestCurrentUsername', this.fetchCurrentUsername);
+        venti.off('setCurrentChatroom', this.setCurrentChatroom);
     },
     render: function(){
         if(this.props.connection) {
@@ -69,7 +82,7 @@ var PlayContent = React.createClass({
                 <div>
                     <p className="flow-text">Please enter your username and then click 'Click to Queue'.</p>
                     <div className="input-field">
-                        <input id="queue-name" placeholder="Enter your username here:" type="text" maxLength="16" length="16" onChange={this.updateQueueName}/>
+                        <input id="queue-name" placeholder="Enter your username here:" value={this.state.queueName} type="text" maxLength="16" length="16" onChange={this.updateQueueName}/>
                     </div>
                     <span>This is the username others will see: <strong className="displayedUsername">{this.state.queueName}</strong></span>
 
@@ -84,7 +97,9 @@ var PlayContent = React.createClass({
                     </div>
                     <QueueInformation usersInQueue={this.state.queueConnections} currentlyQueuing={this.state.inQueue}/>
                     <PromptUsernameModal />
+                    <ClientChatErrorModal />
                     <ClientChat />
+                    <ChatBox name={this.state.queueName} chatroom={this.state.currentChatroom} />
                 </div>
             )
         }else{
