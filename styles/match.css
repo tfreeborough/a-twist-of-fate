@@ -1,0 +1,34 @@
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* IE/Edge */
+    user-select: none;           /* non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+body{
+    padding:20px;
+    background:#3B3042;
+    position:relative;
+}
+#match{
+    color:white;
+}
+
+.match-timer{
+    position:fixed;
+    width:100px;
+    text-align: center;
+    top:0;
+    left:50%;
+    right:50%;
+    margin-left:-50px;
+    background:rgba(0,0,0,0.6);
+    border-radius:0px 0px 5px 5px;
+    padding:10px;
+    box-shadow:1px 1px 5px black;
+    cursor:default;
+    font-weight:bold;
+}

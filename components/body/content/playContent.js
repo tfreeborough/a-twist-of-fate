@@ -28,6 +28,7 @@ var PlayContent = React.createClass({
                     that.setState({queueText:'Leave Queue'});
                     that.setState({inQueue: 'true'});
                     that.setState({queueId: data.id.replace('/queue#','')});
+                    that.matchFound();
                 });
             }else if(this.state.inQueue == 'true'){
                 queueSocket.emit('requestQueueCancel',{id:this.state.queueId});
@@ -53,8 +54,19 @@ var PlayContent = React.createClass({
     setCurrentChatroom: function(data){
        this.setState({currentChatroom:data.room});
     },
+    matchFound: function(data){
+        document.cookie = "match_id=MYMATCH";
+        document.cookie = "player_number=1";
+        queueSocket.emit('requestQueueCancel',{id:this.state.queueId});
+        $('#page-content').fadeToggle(1000,function(){
+            window.location.href = "/match";
+        });
+
+    },
     componentDidMount: function(){
         var that = this;
+
+        queueSocket.on('matchFound',this.matchFound);
         queueSocket.emit('requestQueueClientCount');
         queueSocket.on('queueClientCount', function (data) {
             that.setState({queueConnections:data.connections});
@@ -72,6 +84,8 @@ var PlayContent = React.createClass({
     },
     componentWillUnmount: function(){
         queueSocket.removeAllListeners("queueRequestAccepted");
+        queueSocket.removeAllListeners('matchFound');
+
         venti.off('programmaticallyLeaveQueue',this.programmaticallyLeaveQueue);
         venti.off('requestCurrentUsername', this.fetchCurrentUsername);
         venti.off('setCurrentChatroom', this.setCurrentChatroom);
