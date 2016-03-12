@@ -10,6 +10,7 @@ var $chatRooms = {
         users: []
     }
 };
+var $games = {};
 
 server.listen(80);
 
@@ -23,6 +24,11 @@ app.use("/font",express.static(__dirname + '/font'));
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
+app.get('/match', function (req, res) {
+  res.sendFile(__dirname + '/match.html');
+});
+
+var queueMatches = setInterval(startGames, 15000);
 
 //  Function for handling connections on the server's root namespace
 //	Does not handle queuing or game connections, only chat
@@ -122,11 +128,10 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     	console.log("Queueing connection " + $id + ".");
     	//	Return accepted event
     	socket.emit('queueRequestAccepted', {id: $id, name: $data});
-    	$queue.push({id: $id, name: $data});
+    	$queue.push({id: $id, name: $data, socket: socket});
     	socket.broadcast.emit('queueClientCount', {connections: $queue.length});
     	io.of('/queue').emit('queueClientCount', {connections: $queue.length});
     	//	Pass the current people in queue to the socket and broadcast to other clients
-    	startGames();
     });
 
     //	Function for handling requests to leave the queue
@@ -174,5 +179,18 @@ io.on('disconnect', function(socket) {});
 
 //	Function for matching up sockets to create a game
 function startGames() {
-	console.log('Starting Games!');
+	if ($queue.length > 2) {
+		var $player1 = $queue[0];
+		var $player2 = $queue[1];
+		$player1.socket.emit('matchFound', {gameId:1});
+		$player2.socket.emit('matchFound', {gameId:1});
+
+
+	} else {
+		console.log('No matches made!')
+	}
 }
+
+io.of('/match').on('connection', function(socket) {
+	//socket.on('clientConnected')
+});
