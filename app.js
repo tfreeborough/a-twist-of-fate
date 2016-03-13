@@ -231,6 +231,7 @@ io.of('/match').on('connection', function(socket) {
 				socket.join(data.id);
 				var playerId = 'player' + data.player.toString();
 				$currentGame[data.id][playerId]['connected'] = true;
+				$currentGame[data.id][playerId][id] = socket.id.replace('/#','');
 				$games[$i] = $currentGame
 				if ($currentGame[data.id]['player1']['connected'] == true && $currentGame[data.id]['player2']['connected'] == true) {
 					console.log('Game can start');
@@ -242,6 +243,21 @@ io.of('/match').on('connection', function(socket) {
 				socket.emit('matchError', {name:'Game not found!', msg:'No game was found with this ID.'});
 			}
 		}
+	});
+});
+
+io.of('/match').on('disconnect', function(socket) {
+	$i = 0;
+	$games.forEach(function(element, index, array) {
+		element.forEach(function(element1, index1, array1) {
+			if (typeof element1 == 'object') {
+				if (element1.player1.id == socket.id.replace('/#','') || element1.player2.id == socket.id.replace('/#','')) {
+					$games[$i].splice($i, 1);
+					console.log('Game Aborted!');
+				}
+			}
+		});
+		$i++;
 	});
 });
 
