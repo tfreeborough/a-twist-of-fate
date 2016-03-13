@@ -230,7 +230,7 @@ io.of('/match').on('connection', function(socket) {
 				console.log('$currentGame');
 				socket.join(data.id);
 				var playerId = 'player' + data.player.toString();
-				$currentGame[playerId]['connected'] = true;
+				$currentGame[data,id][playerId]['connected'] = true;
 				$games[$i] = $currentGame
 				if ($currentGame.player1.connected == true && $currentGame.player2.connected == true) {
 					console.log('Game can start');
