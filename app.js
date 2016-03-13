@@ -216,13 +216,10 @@ function startGames() {
 io.of('/match').on('connection', function(socket) {
 	$currentGame = null;
 	socket.on('clientConnected', function(data) {
-		console.log('ClientConnected');
 		if ($games.length >= 1) {
-			console.log('$games.length > 1');
 			$i = 0;
 			$games.forEach(function(element, index, array) {
 				if (element.hasOwnProperty(parseInt(data.id))) {
-					console.log('element.hasOwnProperty(data.id)');
 					$currentGame = $games[$i];
 					return false;
 				}
@@ -231,7 +228,7 @@ io.of('/match').on('connection', function(socket) {
 			if ($currentGame) {
 				console.log('$currentGame');
 				socket.join(data.id);
-				$currentGame[player + data.player].connected = true;
+				$currentGame['player' + data.player].connected = true;
 				$games[$i] = $currentGame
 				if ($currentGame.player1.connected == true && $currentGame.player2.connected == true) {
 					console.log('Game can start');
