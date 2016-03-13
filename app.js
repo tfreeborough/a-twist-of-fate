@@ -216,6 +216,7 @@ function startGames() {
 io.of('/match').on('connection', function(socket) {
 	$currentGame = null;
 	socket.on('clientConnected', function(data) {
+		console.log('ClientConnected');
 		if ($games.length >= 1) {
 			$i = 0;
 			$games.forEach(function(index, element, array) {
