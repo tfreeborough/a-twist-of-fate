@@ -201,7 +201,7 @@ io.on('disconnect', function(socket) {});
 
 //	Function for matching up sockets to create a game
 function startGames() {
-	if ($queue.length > 2) {
+	if ($queue.length >= 2) {
 		var $player1 = $queue[0];
 		var $player2 = $queue[1];
 		$player1.socket.emit('matchFound', {gameId:1, player:1});
