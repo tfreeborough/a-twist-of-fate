@@ -221,6 +221,7 @@ io.of('/match').on('connection', function(socket) {
 			$games.forEach(function(element, index, array) {
 				if (element.hasOwnProperty(parseInt(data.id))) {
 					$currentGame = $games[$i];
+					console.log($games[$i]);
 					return false;
 				}
 				$i++;
@@ -229,7 +230,6 @@ io.of('/match').on('connection', function(socket) {
 				console.log('$currentGame');
 				socket.join(data.id);
 				var playerId = 'player' + data.player.toString();
-				console.log(playerId);
 				$currentGame[playerId]['connected'] = true;
 				$games[$i] = $currentGame
 				if ($currentGame.player1.connected == true && $currentGame.player2.connected == true) {
