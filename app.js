@@ -218,15 +218,18 @@ io.of('/match').on('connection', function(socket) {
 	socket.on('clientConnected', function(data) {
 		console.log('ClientConnected');
 		if ($games.length >= 1) {
+			console.log('$games.length > 1');
 			$i = 0;
 			$games.forEach(function(index, element, array) {
 				if (element.hasOwnProperty(data.id)) {
+					console.log('element.hasOwnProperty(data.id)');
 					$currentGame = $games[$i];
 					return false;
 				}
 				$i++;
 			});
 			if ($currentGame) {
+				console.log('$currentGame');
 				socket.join(data.id);
 				$currentGame[player + data.player].connected = true;
 				$games[$i] = $currentGame
