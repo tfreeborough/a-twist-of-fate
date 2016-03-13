@@ -220,8 +220,8 @@ io.of('/match').on('connection', function(socket) {
 		if ($games.length >= 1) {
 			console.log('$games.length > 1');
 			$i = 0;
-			$games.forEach(function(index, element, array) {
-				if (element.hasOwnProperty(data.id)) {
+			$games.forEach(function(element, index, array) {
+				if (element.hasOwnProperty(parseInt(data.id))) {
 					console.log('element.hasOwnProperty(data.id)');
 					$currentGame = $games[$i];
 					return false;
