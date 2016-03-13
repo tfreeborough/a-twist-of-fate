@@ -221,16 +221,22 @@ function startGames() {
 io.of('/match').on('connection', function(socket) {
 	$currentGame = null;
 	socket.on('clientConnected', function(data) {
-		if ($games.length > 1) {
+		if ($games.length >= 1) {
 			$i = 0;
 			$games.forEach(function(index, element, array) {
 				if (element.hasOwnProperty(data.id)) {
 					$currentGame = $games[$i];
+					break;
 				}
 				$i++;
 			});
 			if ($currentGame) {
 				socket.join(data.id);
+				$currentGame[player + data.player].connected = true;
+				$games[$i] = $currentGame
+				if ($currentGame.player1.connected && $currentGame.player2.connected) {
+					io.to(data.id).emit('matchStart', {player1name:$currentGame.player1.name, player2name:$currentGame.player2.name});
+				}
 			} else {
 				socket.emit('error', {name:'Game not found!', msg:'No game was found with this ID.'});
 			}
