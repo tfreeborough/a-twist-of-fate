@@ -56,7 +56,7 @@ var PlayContent = React.createClass({
     matchFound: function(data){
         console.log('MATCH FOUND!!');
         document.cookie = "match_id="+data.gameId;
-        document.cookie = "player_number="+data.player;
+        document.cookie = "player_id="+data.player;
         queueSocket.emit('requestQueueCancel',{id:this.state.queueId});
         $('#page-content').fadeToggle(1000,function(){
             window.location.href = "/match";
