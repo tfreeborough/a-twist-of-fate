@@ -232,9 +232,9 @@ io.of('/match').on('connection', function(socket) {
 				var playerId = 'player' + data.player.toString();
 				$currentGame[data.id][playerId]['connected'] = true;
 				$games[$i] = $currentGame
-				if ($currentGame.player1.connected == true && $currentGame.player2.connected == true) {
+				if ($currentGame[data.id]['player1']['connected'] == true && $currentGame[data.id]['player2']['connected'] == true) {
 					console.log('Game can start');
-					io.to(data.id).emit('matchStart', {player1name:$currentGame.player1.name, player2name:$currentGame.player2.name});
+					io.to(data.id).emit('matchStart', {player1:$currentGame[data.id]['player1']['name'], player2:$currentGame[data.id]['player2']['name']});
 				} else {
 					console.log('Waiting on a player');
 				}
