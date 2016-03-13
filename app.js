@@ -141,14 +141,12 @@ io.on('connection', function (socket) {
 //	Function for handling requests to enter the game's matchmaking queue
 //	Queue connections must be made on the /queue namespace to separate them from the other guff
 var queueConnection = io.of('/queue').on('connection', function(socket) {
-	console.log('Queueing Connection made');
 
 	//	Function for handling requests to queue
 	socket.on('requestQueue', function(data) {
 		$data = data.username;
     	$id = socket.id.replace('/queue#', '');
     	// Id is based on the socket ID unguessable
-    	console.log("Queueing connection " + $id + ".");
     	//	Return accepted event
     	socket.emit('queueRequestAccepted', {id: $id, name: $data});
     	$queue.push({id: $id, name: $data, socket: socket});
@@ -161,13 +159,10 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     socket.on('requestQueueCancel', function(data) {
     	$id = socket.id.replace('/queue#', '');
     	$i = 0;
-    	console.log($id);
     	$queue.forEach(function (element, index, array) {
-    		console.log(element);
     		//	If user id passed in in queue
     		if (element.id == $id) {
     			$queue.splice($i, 1);
-                console.log($queue);
     			socket.emit('requestQueueCancelAccepted', {id: $id});
     			//	Pass a cancel accept event back to the socket
                 socket.broadcast.emit('queueClientCount', {connections: $queue.length});
@@ -234,8 +229,11 @@ io.of('/match').on('connection', function(socket) {
 				socket.join(data.id);
 				$currentGame[player + data.player].connected = true;
 				$games[$i] = $currentGame
-				if ($currentGame.player1.connected && $currentGame.player2.connected) {
+				if ($currentGame.player1.connected == true && $currentGame.player2.connected == true) {
+					console.log('Game can start');
 					io.to(data.id).emit('matchStart', {player1name:$currentGame.player1.name, player2name:$currentGame.player2.name});
+				} else {
+					console.log('Waiting on a player');
 				}
 			} else {
 				socket.emit('matchError', {name:'Game not found!', msg:'No game was found with this ID.'});
