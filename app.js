@@ -10,7 +10,7 @@ var $chatRooms = {
         users: []
     }
 };
-var $games = {};
+var $games = [];
 
 server.listen(80);
 
@@ -20,7 +20,6 @@ app.use("/external_scripts",express.static(__dirname + '/external_scripts'));
 app.use("/styles",express.static(__dirname + '/styles'));
 app.use("/assets",express.static(__dirname + '/assets'));
 app.use("/font",express.static(__dirname + '/font'));
-app.use("/match",express.static(__dirname + '/match'));
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
@@ -205,15 +204,44 @@ function startGames() {
 	if ($queue.length > 2) {
 		var $player1 = $queue[0];
 		var $player2 = $queue[1];
-		$player1.socket.emit('matchFound', {gameId:1});
-		$player2.socket.emit('matchFound', {gameId:1});
-
-
+		$player1.socket.emit('matchFound', {gameId:1, player:1});
+		$player2.socket.emit('matchFound', {gameId:1, player:2});
+		var $match = new Game($player1, $player2, 1);
+		$match = {1: $match};
+		$games.push($match);
+		$queue.shift();
+		$queue.shift();
+		startGames();
 	} else {
 		console.log('No matches made!')
 	}
 }
 
 io.of('/match').on('connection', function(socket) {
-	//socket.on('clientConnected')
+	$currentGame = null;
+	socket.on('clientConnected', function(data) {
+		if ($games.length > 1) {
+			$i = 0;
+			$games.forEach(function(index, element, array) {
+				if (element.hasOwnProperty(data.id)) {
+					$currentGame = $games[$i];
+				}
+				$i++;
+			});
+			if ($currentGame) {
+				socket.join(data.id);
+			} else {
+				socket.emit('error', {name:'Game not found!', msg:'No game was found with this ID.'});
+			}
+		}
+	});
 });
+
+function Game(player1, player2, id) {
+	this.player1 = player1;
+	this.player1.connected = false;
+	this.player2 = player2;
+	this.player2.connected = false;
+	this.id = id;
+	this.inProgress = false;
+}
