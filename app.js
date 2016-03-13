@@ -20,6 +20,7 @@ app.use("/external_scripts",express.static(__dirname + '/external_scripts'));
 app.use("/styles",express.static(__dirname + '/styles'));
 app.use("/assets",express.static(__dirname + '/assets'));
 app.use("/font",express.static(__dirname + '/font'));
+app.use("/match",express.static(__dirname + '/match'));
 
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');

@@ -28,7 +28,6 @@ var PlayContent = React.createClass({
                     that.setState({queueText:'Leave Queue'});
                     that.setState({inQueue: 'true'});
                     that.setState({queueId: data.id.replace('/queue#','')});
-                    that.matchFound();
                 });
             }else if(this.state.inQueue == 'true'){
                 queueSocket.emit('requestQueueCancel',{id:this.state.queueId});
@@ -55,8 +54,9 @@ var PlayContent = React.createClass({
        this.setState({currentChatroom:data.room});
     },
     matchFound: function(data){
-        document.cookie = "match_id=MYMATCH";
-        document.cookie = "player_number=1";
+        console.log('MATCH FOUND!!');
+        document.cookie = "match_id="+data.gameId;
+        document.cookie = "player_number="+data.player;
         queueSocket.emit('requestQueueCancel',{id:this.state.queueId});
         $('#page-content').fadeToggle(1000,function(){
             window.location.href = "/match";

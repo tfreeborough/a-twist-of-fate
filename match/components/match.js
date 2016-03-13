@@ -3,6 +3,7 @@
 var Match = React.createClass({
     getInitialState: function(){
         return({
+            valid:false,
             match_id:getCookie('match_id')
         });
     },
@@ -15,6 +16,7 @@ var Match = React.createClass({
     render: function(){
         return(
             <div>
+                <h1>{this.state.match_id}</h1>
                 <GameBoard />
                 <GameChat />
                 <GameTimer />
