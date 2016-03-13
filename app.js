@@ -238,7 +238,7 @@ io.of('/match').on('connection', function(socket) {
 					io.to(data.id).emit('matchStart', {player1name:$currentGame.player1.name, player2name:$currentGame.player2.name});
 				}
 			} else {
-				socket.emit('error', {name:'Game not found!', msg:'No game was found with this ID.'});
+				socket.emit('matchError', {name:'Game not found!', msg:'No game was found with this ID.'});
 			}
 		}
 	});
