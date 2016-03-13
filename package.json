@@ -23,6 +23,8 @@
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "rethinkdbdash": "^2.2.18",
-    "bcrypt-nodejs":"^0.0.3"
+    "bcrypt-nodejs":"^0.0.3",
+    "promise":"^7.1.1",
+    "prettyjson":"^1.1.3 "
   }
 }

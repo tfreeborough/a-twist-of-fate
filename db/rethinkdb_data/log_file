@@ -1,0 +1,56 @@
+2385-03-12T20:16:58.047427200 0.024244s notice: In recursion: removing file 'C:\\Users\\Salvador\\Documents\\a-twist-of-fate\\db\\rethinkdb_data\\tmp'
+2385-03-12T20:16:58.048430300 0.025421s warn: Trying to delete non-existent file 'C:\\Users\\Salvador\\Documents\\a-twist-of-fate\\db\\rethinkdb_data\\tmp'
+2385-03-12T20:16:58.050442600 0.027172s notice: Initializing directory C:\\Users\\Salvador\\Documents\\a-twist-of-fate\\db\\rethinkdb_data
+2385-03-12T20:16:58.051433900 0.028034s info: Creating a default database for your convenience. (This is because you ran 'rethinkdb' without 'create', 'serve', or '--join', and the directory 'C:\\Users\\Salvador\\Documents\\a-twist-of-fate\\db\\rethinkdb_data' did not already exist or is empty.)
+2385-03-12T20:16:58.051934700 0.028657s notice: Running rethinkdb 2.2.4-windows-alpha-4 (debug) (MSC 190023506)...
+2385-03-12T20:16:58.052435200 0.029069s notice: Running on 6.2.9200 (Windows 8, Server 2012)
+2385-03-12T20:16:58.052939500 0.029729s notice: Loading data from directory C:\\Users\\Salvador\\Documents\\a-twist-of-fate\\db\\rethinkdb_data
+2385-03-12T20:16:58.115059900 0.091640s notice: Our server ID is 3dd3797f-0580-4954-b851-039f6c555175
+2385-03-12T20:16:58.119555100 0.096511s info: Automatically using cache size of 4953 MB
+2385-03-12T20:16:58.122559200 0.099435s notice: Listening for intracluster connections on port 29015
+2385-03-12T20:16:58.130530000 0.107343s notice: Listening for client driver connections on port 28015
+2385-03-12T20:16:58.132027000 0.108666s notice: Listening for administrative HTTP connections on port 8080
+2385-03-12T20:16:58.132027001 0.108688s notice: Listening on address: 127.0.0.1
+2385-03-12T20:16:58.132027002 0.108702s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2385-03-12T20:16:58.132027003 0.108719s notice: Server ready, "Sal_lmb" 3dd3797f-0580-4954-b851-039f6c555175
+2385-03-12T20:16:58.441963200 0.418605s notice: A newer version of the RethinkDB server is available: 2.2.5. You can read the changelog at <https://github.com/rethinkdb/rethinkdb/releases>.
+2385-03-12T20:21:59.749147600 0.024811s notice: Running rethinkdb 2.2.4-windows-alpha-4 (debug) (MSC 190023506)...
+2385-03-12T20:21:59.750148100 0.025770s notice: Running on 6.2.9200 (Windows 8, Server 2012)
+2385-03-12T20:21:59.750660900 0.026366s notice: Loading data from directory c:\\Users\\Salvador\\Documents\\a-twist-of-fate\\db\\rethinkdb_data
+2385-03-12T20:21:59.767516000 0.043364s notice: Our server ID is 3dd3797f-0580-4954-b851-039f6c555175
+2385-03-12T20:21:59.775029100 0.050826s info: Automatically using cache size of 4956 MB
+2385-03-12T20:21:59.778032200 0.053939s notice: Listening for intracluster connections on port 29015
+2385-03-12T20:21:59.786545300 0.062349s notice: Listening for client driver connections on port 28015
+2385-03-12T20:21:59.788047600 0.063861s notice: Listening for administrative HTTP connections on port 8080
+2385-03-12T20:21:59.788047601 0.063884s notice: Listening on address: 127.0.0.1
+2385-03-12T20:21:59.788047602 0.063897s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2385-03-12T20:21:59.788047603 0.063913s notice: Server ready, "Sal_lmb" 3dd3797f-0580-4954-b851-039f6c555175
+2385-03-12T20:22:00.089979100 0.365824s notice: A newer version of the RethinkDB server is available: 2.2.5. You can read the changelog at <https://github.com/rethinkdb/rethinkdb/releases>.
+2385-03-12T20:29:23.495245900 443.770849s info: Table ffa0432e-5024-488f-84fd-4312e6cbded1: Starting a new Raft election for term 1.
+2385-03-12T20:29:23.496748200 443.772536s info: Table ffa0432e-5024-488f-84fd-4312e6cbded1: Added replica on this server.
+2385-03-12T20:29:23.510269000 443.785838s info: Table ffa0432e-5024-488f-84fd-4312e6cbded1: This server is Raft leader for term 1. Latest log index is 0.
+2385-03-12T20:49:17.852676700 1638.128683s info: Changed server's name from `Sal_lmb` to `tof`.
+2385-03-12T20:50:50.982210300 1731.257819s notice: Removing file c:\\Users\\Salvador\\Documents\\a-twist-of-fate\\db\\rethinkdb_data\\ffa0432e-5024-488f-84fd-4312e6cbded1
+2385-03-12T20:50:50.982210301 1731.257871s info: Table ffa0432e-5024-488f-84fd-4312e6cbded1: Deleted the table.
+2385-03-12T20:51:01.774054700 1742.049922s info: Table 9b2c63ee-54ed-4b7a-9ec9-d41b2f1b5e61: Starting a new Raft election for term 1.
+2385-03-12T20:51:01.776558000 1742.052521s info: Table 9b2c63ee-54ed-4b7a-9ec9-d41b2f1b5e61: Added replica on this server.
+2385-03-12T20:51:01.792582900 1742.068148s info: Table 9b2c63ee-54ed-4b7a-9ec9-d41b2f1b5e61: This server is Raft leader for term 1. Latest log index is 0.
+2385-03-12T21:07:35.608984600 2735.884752s notice: Removing file c:\\Users\\Salvador\\Documents\\a-twist-of-fate\\db\\rethinkdb_data\\9b2c63ee-54ed-4b7a-9ec9-d41b2f1b5e61
+2385-03-12T21:07:35.608984601 2735.884796s info: Table 9b2c63ee-54ed-4b7a-9ec9-d41b2f1b5e61: Deleted the table.
+2385-03-12T21:07:46.333012700 2746.608650s info: Table 250833eb-5ad1-4f2f-916a-a5b28ff11349: Starting a new Raft election for term 1.
+2385-03-12T21:07:46.334515500 2746.610303s info: Table 250833eb-5ad1-4f2f-916a-a5b28ff11349: Added replica on this server.
+2385-03-12T21:07:46.356551200 2746.632188s info: Table 250833eb-5ad1-4f2f-916a-a5b28ff11349: This server is Raft leader for term 1. Latest log index is 0.
+2385-03-12T23:32:44.661069900 0.021917s notice: Running rethinkdb 2.2.4-windows-alpha-4 (debug) (MSC 190023506)...
+2385-03-12T23:32:44.661570600 0.022454s notice: Running on 6.2.9200 (Windows 8, Server 2012)
+2385-03-12T23:32:44.661570601 0.022748s notice: Loading data from directory c:\\Users\\Salvador\\Documents\\a-twist-of-fate\\db\\rethinkdb_data
+2385-03-12T23:32:44.680118600 0.041188s notice: Our server ID is 3dd3797f-0580-4954-b851-039f6c555175
+2385-03-12T23:32:44.685126100 0.046037s info: Automatically using cache size of 4912 MB
+2385-03-12T23:32:44.688121700 0.048939s notice: Listening for intracluster connections on port 29015
+2385-03-12T23:32:44.768928100 0.129691s notice: Listening for client driver connections on port 28015
+2385-03-12T23:32:44.770430400 0.131137s notice: Listening for administrative HTTP connections on port 8080
+2385-03-12T23:32:44.770430401 0.131157s notice: Listening on address: 127.0.0.1
+2385-03-12T23:32:44.770430402 0.131174s notice: To fully expose RethinkDB on the network, bind to all addresses by running rethinkdb with the `--bind all` command line option.
+2385-03-12T23:32:44.770430403 0.131267s notice: Server ready, "tof" 3dd3797f-0580-4954-b851-039f6c555175
+2385-03-12T23:32:45.181146000 0.542050s notice: A newer version of the RethinkDB server is available: 2.2.5. You can read the changelog at <https://github.com/rethinkdb/rethinkdb/releases>.
+2385-03-12T23:32:46.598052900 1.959202s info: Table 250833eb-5ad1-4f2f-916a-a5b28ff11349: Starting a new Raft election for term 2.
+2385-03-12T23:32:46.607557900 1.968559s info: Table 250833eb-5ad1-4f2f-916a-a5b28ff11349: This server is Raft leader for term 2. Latest log index is 2.

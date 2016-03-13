@@ -1,4 +1,4 @@
 /react/socket-address.js
 node_modules/
 .idea/
-db/
+db/rethinkdb_data/dirlock
