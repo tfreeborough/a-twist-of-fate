@@ -226,7 +226,7 @@ io.of('/match').on('connection', function(socket) {
 			$games.forEach(function(index, element, array) {
 				if (element.hasOwnProperty(data.id)) {
 					$currentGame = $games[$i];
-					break;
+					return false;
 				}
 				$i++;
 			});
