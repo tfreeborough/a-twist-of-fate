@@ -272,6 +272,7 @@ io.of('/match').on('connection', function(socket) {
         $i = 0;
         console.log('DISCONNECT FIRED');
         $games.forEach(function(element, index, array) {
+            console.log(element);
             /*
             element.forEach(function(element1, index1, array1) {
                 if (typeof element1 == 'object') {
