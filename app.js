@@ -4,7 +4,8 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var prettyjson = require('prettyjson');
 //our modules
-var User = require("./user");
+
+// var User = require("./user");
 
 //utility variables
 var $queue = [];
@@ -244,7 +245,6 @@ io.of('/match').on('connection', function(socket) {
             $games.forEach(function(element, index, array) {
                 if (element.hasOwnProperty(parseInt(data.id))) {
                     $currentGame = $games[$i];
-                    console.log($games[$i]);
                     return false;
                 }
                 $i++;
@@ -254,7 +254,7 @@ io.of('/match').on('connection', function(socket) {
                 socket.join(data.id);
                 var playerId = 'player' + data.player.toString();
                 $currentGame[data.id][playerId]['connected'] = true;
-                $currentGame[data.id][playerId][id] = socket.id.replace('/#', '');
+                $currentGame[data.id][playerId]['id'] = socket.id.replace('/#', '');
                 $games[$i] = $currentGame
                 if ($currentGame[data.id]['player1']['connected'] == true && $currentGame[data.id]['player2']['connected'] == true) {
                     console.log('Game can start');
@@ -267,20 +267,24 @@ io.of('/match').on('connection', function(socket) {
             }
         }
     });
-});
 
-io.of('/match').on('disconnect', function(socket) {
-    $i = 0;
-    $games.forEach(function(element, index, array) {
-        element.forEach(function(element1, index1, array1) {
-            if (typeof element1 == 'object') {
-                if (element1.player1.id == socket.id.replace('/#', '') || element1.player2.id == socket.id.replace('/#', '')) {
-                    $games[$i].splice($i, 1);
-                    console.log('Game Aborted!');
+    socket.on('disconnect', function(socket) {
+        $i = 0;
+        console.log('DISCONNECT FIRED');
+        $games.forEach(function(element, index, array) {
+            /*
+            element.forEach(function(element1, index1, array1) {
+                if (typeof element1 == 'object') {
+                    console.log('MATCH DISCONNECTION CALLED: '+element1);
+                    if (element1.player1.id == socket.id.replace('/#', '') || element1.player2.id == socket.id.replace('/#', '')) {
+                        $games[$i].splice($i, 1);
+                        console.log('Game Aborted!');
+                    }
                 }
-            }
+            });
+            */
+            $i++;
         });
-        $i++;
     });
 });
 

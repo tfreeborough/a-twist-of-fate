@@ -17,11 +17,16 @@ var RegisterContent = React.createClass({
 
     	if(validated){
     		registerSocket.emit("register", this.state);
-    		registerSocket.on("registerComplete", function(data){
-    			console.log("Registration was good", data);
-    		})
     	}
     },
+	componentDidMount: function(){
+		registerSocket.on("registerComplete", function(data){
+			console.log("Registration was good", data);
+		})
+	},
+	componentWillUnmount: function(){
+		registerSocket.removeAllListeners("registerComplete");
+	},
 	render: function(){
 		return (
 			<div>
