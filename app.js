@@ -268,22 +268,22 @@ io.of('/match').on('connection', function(socket) {
         }
     });
 
-    socket.on('disconnect', function(socket) {
+    socket.on('disconnect', function() {
         $i = 0;
         console.log('DISCONNECT FIRED');
         $games.forEach(function(element, index, array) {
             console.log(element);
-            /*
-            element.forEach(function(element1, index1, array1) {
-                if (typeof element1 == 'object') {
-                    console.log('MATCH DISCONNECTION CALLED: '+element1);
-                    if (element1.player1.id == socket.id.replace('/#', '') || element1.player2.id == socket.id.replace('/#', '')) {
-                        $games[$i].splice($i, 1);
-                        console.log('Game Aborted!');
-                    }
+            for (var key in element) {
+                if (!element.hasOwnProperty(key)) continue;
+                var $game = element[key];
+                console.log('ELEMENT PLAYER1: '+$game.player1.id);
+                console.log('ELEMENT PLAYER2: '+$game.player2.id);
+                console.log(socket);
+                if ($game.player1.id == socket.id.replace('/#', '') || $game.player2.id == socket.id.replace('/#', '')) {
+                    $games.splice($i, 1);
+                    console.log('Game Aborted!');
                 }
-            });
-            */
+            }
             $i++;
         });
     });

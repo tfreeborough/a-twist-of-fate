@@ -33,9 +33,7 @@ var Match = React.createClass({
         if(this.state.valid) {
             return (
                 <div>
-                    <h1>Me: {this.state.player_name}</h1>
-                    <h1>Opponent: {this.state.opponent_name}</h1>
-                    <GameBoard />
+                    <GameBoard playerName={this.state.player_name} opponentName={this.state.opponent_name} />
                     <GameChat />
                     <GameTimer />
                     <Settings />

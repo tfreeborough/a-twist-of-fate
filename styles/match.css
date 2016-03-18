@@ -9,9 +9,13 @@
 }
 
 body{
-    padding:20px;
-    background:#3B3042;
-    position:relative;
+    padding: 20px;
+    background: #3B3042;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 #match{
     color:white;
@@ -35,4 +39,50 @@ body{
 
 .faded{
     opacity:0.5;
+}
+
+.opponent-name{
+    position: fixed;
+    top: 20px;
+    left: 0;
+    padding: 10px 30px 10px 30px;
+    margin: 0px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 0px 20px 20px 0px;
+    text-align: right;
+    font-weight: 100;
+}
+
+.player-name{
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    padding: 10px 30px 10px 30px;
+    margin: 0px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 0px 20px 20px 0px;
+    text-align: right;
+    font-weight:100;
+}
+
+.opponent-half{
+    position: absolute;
+    background: red;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 50%;
+    box-sizing: border-box;
+    border-bottom: 10px solid #511D54;
+}
+
+.player-half{
+    position: absolute;
+    background: lime;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50%;
+    box-sizing: border-box;
+    border-top: 10px solid #511D54;
 }
