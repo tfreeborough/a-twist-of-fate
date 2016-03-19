@@ -231,6 +231,7 @@ function startGames() {
         $games.push($match);
         $queue.shift();
         $queue.shift();
+        io.of('/queue').emit('queueClientCount', { connections: $queue.length });
         startGames();
     } else {
         console.log('No matches made!')

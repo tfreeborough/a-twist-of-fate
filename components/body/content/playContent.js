@@ -23,6 +23,9 @@ var PlayContent = React.createClass({
         if(this.state.queueName != '') {
             var that = this;
             if(this.state.inQueue == 'false') {
+                var enterQueue = new Howl({
+                    urls: ['/assets/sounds/front/enter-queue.mp3']
+                }).play();
                 queueSocket.emit('requestQueue', {username: this.state.queueName});
                 queueSocket.on('queueRequestAccepted', function (data) {
                     that.setState({queueText:'Leave Queue'});
@@ -30,6 +33,9 @@ var PlayContent = React.createClass({
                     that.setState({queueId: data.id.replace('/queue#','')});
                 });
             }else if(this.state.inQueue == 'true'){
+                var leaveQueue = new Howl({
+                    urls: ['/assets/sounds/front/leave-queue.mp3']
+                }).play();
                 queueSocket.emit('requestQueueCancel',{id:this.state.queueId});
                 queueSocket.on('requestQueueCancelAccepted', function (data) {
                     that.setState({queueText:'Queue'});
@@ -58,7 +64,10 @@ var PlayContent = React.createClass({
         document.cookie = "match_id="+data.gameId;
         document.cookie = "player_id="+data.player;
         queueSocket.emit('requestQueueCancel',{id:this.state.queueId});
-        $('#page-content').fadeToggle(1000,function(){
+        var matchFound = new Howl({
+            urls: ['/assets/sounds/front/match-found.mp3']
+        }).play();
+        $('#page-content').fadeToggle(5000,function(){
             window.location.href = "/match";
         });
 
