@@ -19,6 +19,18 @@ var Match = React.createClass({
             this.setState({player_name:data.player2});
             this.setState({opponent_name:data.player1});
         }
+
+        var matchMusic = new Howl({
+            urls: ['/assets/sounds/match/match-music-1.mp3'],
+            autoplay: true,
+            loop: true,
+            volume: 0.5,
+            onplay: function() {
+                var matchPlay = new Howl({
+                    urls: ['/assets/sounds/match/play.mp3']
+                }).play();
+            }
+        });
     },
     componentDidMount: function(){
         matchSocket.emit('clientConnected',{id:this.state.match_id,player:this.state.player_id});
