@@ -34,6 +34,24 @@ body{
     width:64px;
 }
 
+.modal{
+    background:rgba(0,0,0,0.85)!important;
+    color:white!important;
+}
+
+.modal .modal-content{
+    color:white!important;
+}
+
+.modal .modal-footer{
+    background-color: rgba(0,0,0,0)!important;
+}
+
+.modal .modal-footer a{
+    color:white!important;
+    opacity:0.8;
+}
+
 .main-menu{
     display: inline-block;
     background: rgba(255,255,2656,0.2);

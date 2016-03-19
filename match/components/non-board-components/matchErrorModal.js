@@ -16,6 +16,13 @@ var MatchErrorModal = React.createClass({
     setError: function(data){
         this.setState({name:data.name});
         this.setState({msg:data.msg});
+        this.showModal();
+    },
+    showModal: function(){
+        console.log('ERROR TIME!');
+        $('#match-error-modal').openModal({
+            dismissible: false
+        });
     },
     hideModal: function(){
         $('#match-error-modal').closeModal();
@@ -26,14 +33,13 @@ var MatchErrorModal = React.createClass({
         return(
             <div id="match-error-modal" className="modal black-text">
                 <div className="modal-content">
-                    <h4 className="red-text">Oopsie! Something unexpected happened.</h4>
-                    <h5>{this.state.name}</h5>
+                    <h4 className="red-text">{this.state.name}</h4>
                     <p className="flow-text">
                         {this.state.msg}
                     </p>
                 </div>
                 <div className="modal-footer">
-                    <a href="javascript:void(0)" onClick={this.hideModal} className=" modal-action waves-effect waves-purple btn-flat">Alright</a>
+                    <a href="javascript:void(0)" onClick={this.hideModal} className="modal-action waves-effect waves-purple btn-flat">Alas! My Fight was in Vein...</a>
                 </div>
             </div>
         )

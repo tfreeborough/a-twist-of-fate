@@ -271,7 +271,7 @@ io.of('/match').on('connection', function(socket) {
 
     socket.on('disconnect', function() {
         $i = 0;
-        console.log('DISCONNECT FIRED');
+
         $games.forEach(function(element, index, array) {
             console.log(element);
             for (var key in element) {
@@ -282,7 +282,8 @@ io.of('/match').on('connection', function(socket) {
                 console.log(socket);
                 if ($game.player1.id == socket.id.replace('/#', '') || $game.player2.id == socket.id.replace('/#', '')) {
                     $games.splice($i, 1);
-                    console.log('Game Aborted!');
+                    console.log('DISCONNECT FIRED');
+                    io.of('/match').to($game.id).emit('matchError', { name: 'Your opponent has disconnected', msg: 'What sort of coward leaves in the middle of a duel? COWARD! We are really sorry but because your opponent left, that means you will need to re-queue. Our Apologies :(' });
                 }
             }
             $i++;

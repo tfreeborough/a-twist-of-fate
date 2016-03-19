@@ -161,3 +161,22 @@ body{
 .fullscreen-settings .switch{
     display: inline-block;
 }
+
+.modal{
+    background:rgba(0,0,0,0.85)!important;
+    color:white!important;
+}
+
+.modal .modal-content{
+    color:white!important;
+}
+
+.modal .modal-footer{
+    background-color: rgba(0,0,0,0)!important;
+}
+
+.modal .modal-footer a{
+    color:white!important;
+    opacity:0.8;
+}
+
