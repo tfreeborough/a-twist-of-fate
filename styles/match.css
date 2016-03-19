@@ -137,3 +137,27 @@ body{
     border-radius: 5px 0px 0px 0px;
     cursor:pointer;
 }
+
+.fullscreen-settings{
+    margin-top: 10px;
+    background: rgba(0,0,0,0.8);
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height:40px;
+    border-radius: 5px;
+}
+
+.fullscreen-settings .switch label input[type=checkbox]:checked+.lever:after {
+    background-color: #511D54;
+}
+
+.fullscreen-settings .toggle-label{
+    margin-left: 15px;
+    font-weight: 100;
+    vertical-align: middle;
+}
+
+.fullscreen-settings .switch{
+    display: inline-block;
+}
