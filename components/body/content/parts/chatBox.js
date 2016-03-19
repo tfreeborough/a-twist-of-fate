@@ -82,6 +82,9 @@ var ChatBox = React.createClass({
     },
     manuallyLeaveChat: function(){
         socket.emit('leaveChatEvent');
+        var joinChat = new Howl({
+            urls: ['/assets/sounds/front/chat-join.mp3']
+        }).play();
         this.setHidden();
         socket.emit('requestChatRoomList');
     },

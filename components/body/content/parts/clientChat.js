@@ -68,6 +68,9 @@ var ClientChat = React.createClass({
         /*
         If the request to join a room is accepted, load up a chat window
          */
+        var joinChat = new Howl({
+            urls: ['/assets/sounds/front/chat-join.mp3']
+        }).play();
         venti.trigger('setCurrentChatroom',{room:this.currentlyRequestedRoom});
         venti.trigger('activateChatPanel');
         socket.emit('requestChatRoomList');
