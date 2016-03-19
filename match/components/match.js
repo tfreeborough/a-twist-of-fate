@@ -27,7 +27,8 @@ var Match = React.createClass({
             volume: 0.5,
             onplay: function() {
                 var matchPlay = new Howl({
-                    urls: ['/assets/sounds/match/play.mp3']
+                    urls: ['/assets/sounds/match/play.mp3'],
+                    volume: 0.5
                 }).play();
             }
         });
