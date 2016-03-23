@@ -17,8 +17,32 @@ var user = {
 	    	})
 		})
 
+		return p;	
+	},
+	logIn: function(userObj){
+		var p = new Promise(function(resolve, reject){
+			//userObj.password = bcrypt.hashSync(userObj.password);
+
+			rdb.db("main").table("users").get(userObj.email).then(function(result){
+				//if passwords match
+				if(bcrypt.compareSync(userObj.password, result.password)){
+					resolve(true);
+				} else {
+					reject(false);
+				}
+			})
+		})
+
 		return p;
-			
+	},
+	//always returns message to return to client
+	handleError: function(result){
+        //handle if duplicate key
+        if(result.errors > 0 && result.first_error.includes("Duplicate primary key")){
+            console.error("User.handleError: duplicate email");
+
+            return "This email is already taken.";
+        }
 	}
 }
 

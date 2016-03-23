@@ -5,7 +5,7 @@ var io = require('socket.io')(server);
 var prettyjson = require('prettyjson');
 //our modules
 
-// var User = require("./user");
+var User = require("./user");
 
 //utility variables
 var $queue = [];
@@ -155,10 +155,27 @@ var registerConnection = io.of('/register').on('connection', function(socket) {
 
         User.register(data).then(function(result) {
                 console.log("registerConnection.User.register: success\n", prettyjson.render(result, logOptions));
+                io.of("/register").emit("registerComplete", true);
             })
             .catch(function(result) {
-                console.log("registerConnection.User.register: failed\n", prettyjson.render(result, logOptions));
+                //console.log("registerConnection.User.register: failed\n", prettyjson.render(result, logOptions));
+                io.of("/register").emit("emailTaken", User.handleError(result));
             })
+    })
+});
+
+var logInConnection = io.of("/logIn").on("connection", function(socket) {
+    socket.on("logIn", function(data){
+        console.log("logInAttempt data ....\n", prettyjson.render(data, logOptions));
+
+        User.logIn(data).then(function(result){
+            console.log("User.logIn: success - ", result);
+            io.of("/logIn").emit("logInValid", true);
+        })
+        .catch(function(result){
+            console.log("User.logIn: failed - ", result);
+            io.of("/logIn").emit("logInFailed", false);
+        })
     })
 })
 
@@ -234,7 +251,7 @@ function startGames() {
         io.of('/queue').emit('queueClientCount', { connections: $queue.length });
         startGames();
     } else {
-        console.log('No matches made!')
+        //console.log('No matches made!')
     }
 }
 

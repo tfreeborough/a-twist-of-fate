@@ -21,11 +21,16 @@ var RegisterContent = React.createClass({
     },
 	componentDidMount: function(){
 		registerSocket.on("registerComplete", function(data){
-			console.log("Registration was good", data);
+			console.log("on.registerComplete: ", data);
+		})
+
+		registerSocket.on("emailTaken", function(data){
+			console.log("on.emailTaken: ", data);
 		})
 	},
 	componentWillUnmount: function(){
 		registerSocket.removeAllListeners("registerComplete");
+		registerSocket.removeAllListeners("emailTaken");
 	},
 	render: function(){
 		return (

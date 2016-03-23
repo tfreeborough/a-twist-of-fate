@@ -6,6 +6,7 @@ var SiteMenu = React.createClass({
             menuItems:[
                 {name:'Home'},
                 {name:'Play'},
+                {name: "Log In"},
                 {name: "Register"}
             ]
         });
