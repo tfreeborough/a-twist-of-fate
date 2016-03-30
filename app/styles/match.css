@@ -1,0 +1,182 @@
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* IE/Edge */
+    user-select: none;           /* non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+body{
+    padding: 20px;
+    background: #3B3042;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+#match{
+    color:white;
+}
+
+.match-timer{
+    position:fixed;
+    width:100px;
+    text-align: center;
+    top:0;
+    left:50%;
+    right:50%;
+    margin-left:-50px;
+    background:rgba(0,0,0,0.6);
+    border-radius:0px 0px 5px 5px;
+    padding:10px;
+    box-shadow:1px 1px 5px black;
+    cursor:default;
+    font-weight:bold;
+}
+
+.faded{
+    opacity:0.5;
+}
+
+.opponent-name{
+    position: fixed;
+    top: 20px;
+    left: 0;
+    padding: 10px 30px 10px 30px;
+    margin: 0px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 0px 20px 20px 0px;
+    text-align: right;
+    font-weight: 100;
+}
+
+.player-name{
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    padding: 10px 30px 10px 30px;
+    margin: 0px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 0px 20px 20px 0px;
+    text-align: right;
+    font-weight:100;
+}
+
+.opponent-half{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 50%;
+    box-sizing: border-box;
+    border-bottom: 10px solid #511D54;
+}
+
+.player-half{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 50%;
+    box-sizing: border-box;
+    border-top: 10px solid #511D54;
+}
+
+.match-settings{
+    position: fixed;
+    padding: 20px;
+    background: rgba(0,0,0,0.6);
+    bottom: 0;
+    right: 0;
+    width: 400px;
+    border-radius: 5px 0px 0px 0px;
+    padding-bottom: 70px;
+    display:none;
+}
+
+.volume-bar{
+    width: 100%;
+    height: 40px;
+    background: rgba(0,0,0,0.8);
+    border-radius:5px;
+    overflow:hidden;
+    position:relative;
+    cursor:pointer;
+}
+
+.volume-bar-inner{
+    width: 100%;
+    height: 40px;
+    background: #511D54;
+}
+
+.volume-bar-percent{
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    font-weight: 700;
+}
+
+.settings-label{
+    position:absolute;
+    top:3px;
+    left:10px;
+    font-weight:100;
+    opacity:0.6;
+}
+
+.settings-icon{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 10px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 5px 0px 0px 0px;
+    cursor:pointer;
+}
+
+.fullscreen-settings{
+    margin-top: 10px;
+    background: rgba(0,0,0,0.8);
+    padding: 3px;
+    padding-left: 10px;
+    padding-right: 10px;
+    height:40px;
+    border-radius: 5px;
+}
+
+.fullscreen-settings .switch label input[type=checkbox]:checked+.lever:after {
+    background-color: #511D54;
+}
+
+.fullscreen-settings .toggle-label{
+    margin-left: 15px;
+    font-weight: 100;
+    vertical-align: middle;
+}
+
+.fullscreen-settings .switch{
+    display: inline-block;
+}
+
+.modal{
+    background:rgba(0,0,0,0.85)!important;
+    color:white!important;
+}
+
+.modal .modal-content{
+    color:white!important;
+}
+
+.modal .modal-footer{
+    background-color: rgba(0,0,0,0)!important;
+}
+
+.modal .modal-footer a{
+    color:white!important;
+    opacity:0.8;
+}
+

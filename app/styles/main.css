@@ -1,0 +1,285 @@
+body{
+    border: none;
+}
+
+#bgimg {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 101%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    background: url("/assets/Twisted_Fate.jpg") no-repeat;
+    background-size: cover;
+}
+
+.server-connection{
+    display: inline-block;
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(0,0,0,0.5);
+    padding: 10px;
+    color: white;
+    border-radius: 50px;
+}
+
+.server-connection img{
+    width:64px;
+}
+
+.modal{
+    background:rgba(0,0,0,0.85)!important;
+    color:white!important;
+}
+
+.modal .modal-content{
+    color:white!important;
+}
+
+.modal .modal-footer{
+    background-color: rgba(0,0,0,0)!important;
+}
+
+.modal .modal-footer a{
+    color:white!important;
+    opacity:0.8;
+}
+
+.main-menu{
+    display: inline-block;
+    background: rgba(255,255,2656,0.2);
+    margin:0px;
+    border-radius: 0px 0px 5px 5px;
+    text-align: center;
+    padding: 0px 50px;
+}
+
+.main-menu li{
+    display:inline-block;
+    padding:10px;
+}
+
+.main-menu a{
+    color: white;
+}
+
+.main-menu .active{
+    color:#88FF00;
+}
+
+#page-content{
+
+}
+
+.queue-button{
+    margin-top:50px;
+    margin-bottom:50px;
+    text-align: center;
+}
+
+#queue-name{
+    background: rgba(0,0,0,0.4);
+    padding: 10px;
+}
+
+.queue-button a{
+    width:20%;
+    display:inline-block;
+    text-align: left;
+    min-width: 200px;
+}
+
+.queue-button-inner{
+    text-align: center;
+}
+
+.queue-button-inner span{
+    font-size:2rem;
+    vertical-align: top;
+}
+
+.queue-button-inner i{
+    margin-left:10px;
+    font-size: 2.5rem!important;
+}
+
+#client-chat{
+    position: fixed;
+    bottom: 10px;
+    right: 104px;
+    padding: 20px;
+    height: 90px;
+    width: 84px;
+    border-radius: 50px;
+    background: rgba(0,0,0,0.5);
+    text-align: center;
+}
+
+#client-chat li{
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 10px;
+}
+
+#client-chat .client-chat-icon{
+    padding:0px;
+    right: 118px;
+    bottom: 27px;
+}
+
+#client-chat .client-chat-icon .btn-large{
+    padding: 13px;
+    width: 84px;
+    height: 84px;
+    margin: -15px;
+    text-align: center;
+}
+
+#client-chat .btn-large i{
+    font-size: 3rem;
+    display: inline;
+}
+
+#client-chat ul a{
+    border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: auto !important;
+}
+
+.none-selectable {
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */
+}
+
+#play-chat-box{
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    top: 0;
+    background: rgba(0,0,0,0.95);
+    width: 500px;
+    z-index: 1000;
+    border-right: 1px solid #483D4C;
+}
+
+.chatbox-active-chat{
+    width: 100%;
+    height: 100%;
+}
+
+.chatbox-active-chat .send-message{
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+    left: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.manual-chat-options{
+    position: absolute;
+    bottom: 4px;
+    font-size: 0.8rem;
+    left: 10px;
+    right: 10px;
+    text-align: right;
+}
+
+.manual-chat-options span {
+    margin-left: 10px;
+    opacity:0.8;
+}
+
+
+textarea {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    resize: none;
+}
+
+.faded{
+    opacity:0.2;
+}
+
+.messages ul{
+    position: absolute;
+    left: 10px;
+    right: 10px;
+    top: 0px;
+    bottom: 0px;
+    margin-bottom: 60px;
+    overflow: auto;
+    word-break: break-word;
+    padding-right: 10px;
+}
+
+.unseen-messages{
+    position: absolute;
+    top: 20px;
+    right: 17px;
+    font-size: 2rem;
+    font-weight: bold;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+}
+
+.headline-wrapper{
+    padding:100px;
+}
+
+.headline-wrapper h2{
+    display:inline-block!important;
+    margin: auto;
+}
+
+.collection.with-header .collection-header{
+    background:rgba(144, 202, 249,0.3)!important;
+    border-bottom:none!important;
+}
+.collection.with-header .collection-item{
+    background:rgba(0,0,0,0.3)!important;
+    border-bottom:none!important;
+    padding-top: 20px!important;
+    padding-bottom: 20px!important;
+}
+
+.collection{
+    border:none!important;
+}
+
+.features{
+    margin-top:100px;
+}
+
+.intro-card{
+    margin-bottom:100px;
+}
+
+@media screen and (max-width: 800px) {
+    html {
+        background: url("/assets/Twisted_Fate.jpg") #000 no-repeat center center fixed;
+    }
+    #bgvid {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    #play-chat-box{
+        bottom: 105px;
+        width:100%;
+    }
+}
