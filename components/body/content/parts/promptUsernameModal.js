@@ -6,6 +6,7 @@ var PromptUsernameModal = React.createClass({
         venti.on('promptForUsername',this.promptForUsername);
     },
     promptForUsername: function(){
+        $('.lean-overlay').remove();
         $('#prompt-username-modal').openModal();
     },
     hideModal: function(){
