@@ -24,19 +24,19 @@ var logOptions = {
 
 server.listen(80);
 
-app.use("/react", express.static(__dirname + '/react'));
-app.use("/components", express.static(__dirname + '/components'));
-app.use("/external_scripts", express.static(__dirname + '/external_scripts'));
-app.use("/styles", express.static(__dirname + '/styles'));
-app.use("/assets", express.static(__dirname + '/assets'));
-app.use("/font", express.static(__dirname + '/font'));
-app.use("/match", express.static(__dirname + '/match'));
+app.use("/react", express.static(__dirname + '/app/react'));
+app.use("/components", express.static(__dirname + '/app/components'));
+app.use("/external_scripts", express.static(__dirname + '/app/external_scripts'));
+app.use("/styles", express.static(__dirname + '/app/styles'));
+app.use("/assets", express.static(__dirname + '/app/assets'));
+app.use("/font", express.static(__dirname + '/app/font'));
+app.use("/match", express.static(__dirname + '/app/match'));
 
 app.get('/', function(req, res) {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/app/index.html');
 });
 app.get('/match', function(req, res) {
-    res.sendFile(__dirname + '/match.html');
+    res.sendFile(__dirname + '/app/match.html');
 });
 
 var queueMatches = setInterval(startGames, 15000);
