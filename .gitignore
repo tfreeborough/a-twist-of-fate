@@ -1,6 +1,6 @@
-/react/socket-address.js
+/app/react/socket-address.js
 node_modules/
 .idea/
-db/rethinkdb_data/dirlock
+/db/rethinkdb_data/dirlock
 /db/rethinkdb_data
 /db/rethinkdb_data/*
