@@ -2,3 +2,5 @@
 node_modules/
 .idea/
 db/rethinkdb_data/dirlock
+/db/rethinkdb_data
+/db/rethinkdb_data/*
