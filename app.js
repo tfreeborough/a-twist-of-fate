@@ -7,6 +7,9 @@ var prettyjson = require('prettyjson');
 
 var User = require("./user");
 
+//All logic relating to the matches goes in here
+var Match = require('./match');
+
 //utility variables
 var $queue = [];
 var $chatRooms = {
@@ -277,6 +280,7 @@ io.of('/match').on('connection', function(socket) {
                 if ($currentGame[data.id]['player1']['connected'] == true && $currentGame[data.id]['player2']['connected'] == true) {
                     console.log('Game can start');
                     io.of('/match').to(data.id).emit('matchStart', { player1: $currentGame[data.id]['player1']['name'], player2: $currentGame[data.id]['player2']['name'] });
+                    Match.initiateGame();
                 } else {
                     console.log('Waiting on a player');
                 }

@@ -6,6 +6,7 @@ var Match = React.createClass({
             valid:false,
             match_id:getCookie('match_id'),
             player_id:getCookie('player_id'),
+            opponent_id:'',
             player_name:'',
             opponent_name:''
         });
@@ -15,9 +16,11 @@ var Match = React.createClass({
         if(this.state.player_id == '1'){
             this.setState({player_name:data.player1});
             this.setState({opponent_name:data.player2});
+            this.setState({opponent_id:'2'});
         }else if(this.state.player_id == '2'){
             this.setState({player_name:data.player2});
             this.setState({opponent_name:data.player1});
+            this.setState({opponent_id:'1'});
         }
 
         var matchMusic = new Howl({
@@ -46,7 +49,7 @@ var Match = React.createClass({
         if(this.state.valid) {
             return (
                 <div>
-                    <GameBoard playerName={this.state.player_name} opponentName={this.state.opponent_name} />
+                    <GameBoard playerId={this.state.player_id} opponentId={this.state.opponent_id} playerName={this.state.player_name} opponentName={this.state.opponent_name} />
                     <GameChat />
                     <GameTimer />
                     <Settings />
