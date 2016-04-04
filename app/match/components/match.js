@@ -36,11 +36,23 @@ var Match = React.createClass({
     componentDidMount: function(){
         matchSocket.emit('clientConnected',{id:this.state.match_id,player:this.state.player_id});
         matchSocket.on('matchStart',this.matchStart);
+        matchSocket.on("exampleRoomEvent", function(data){
+            console.log("exampleRoomEvent", data);
+        });
+
         delete_cookie('match_id');
         delete_cookie('player_id');
+
+        //for example sake's delete this later
+        var that = this;
+        setInterval(function(){
+            matchSocket.emit("exampleRoomEvent", {gameId:that.state.match_id, player: that.state.player_id});
+        }, 3000);
     },
     componentWillUnmount: function(){
+
         matchSocket.removeListener('matchStart',this.matchStart);
+        matchSocket.removeListener("exampleRoomEvent");        
     },
     render: function(){
         if(this.state.valid) {
