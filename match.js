@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 var shortid = require('shortid');
 
 var match = {
