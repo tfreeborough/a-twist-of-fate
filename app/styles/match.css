@@ -35,6 +35,7 @@ body{
     box-shadow:1px 1px 5px black;
     cursor:default;
     font-weight:bold;
+    z-index:500;
 }
 
 .faded{
@@ -44,13 +45,14 @@ body{
 .opponent-name{
     position: fixed;
     top: 20px;
-    left: 0;
+    right: 0;
     padding: 10px 30px 10px 30px;
     margin: 0px;
     background: rgba(0,0,0,0.5);
-    border-radius: 0px 20px 20px 0px;
+    border-radius: 20px 0px 0px 20px;
     text-align: right;
     font-weight: 100;
+    z-index:100;
 }
 
 .player-name{
@@ -63,6 +65,7 @@ body{
     border-radius: 0px 20px 20px 0px;
     text-align: right;
     font-weight:100;
+    z-index:100;
 }
 
 .opponent-half{
@@ -95,6 +98,7 @@ body{
     border-radius: 5px 0px 0px 0px;
     padding-bottom: 70px;
     display:none;
+    z-index:300;
 }
 
 .volume-bar{
@@ -136,6 +140,7 @@ body{
     background: rgba(0,0,0,0.5);
     border-radius: 5px 0px 0px 0px;
     cursor:pointer;
+    z-index:400;
 }
 
 .fullscreen-settings{
@@ -180,3 +185,32 @@ body{
     opacity:0.8;
 }
 
+
+.player-half .nexus-wrapper{
+    bottom:15px;
+    text-align: left;
+}
+
+.opponent-half .nexus-wrapper{
+    top:15px;
+    text-align: right;
+}
+
+.nexus-wrapper{
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    width: 90%;
+    position: absolute;
+    z-index: 1;
+}
+
+.nexus {
+    position: relative;
+    display: inline-block;
+}
+
+.nexus img{
+    width:300px;
+}
