@@ -31,16 +31,3 @@ function Game(player1, player2, id) {
 }
 
 module.exports = match;
-=======
-var Logic = require('./match-logic');
-
-
-var match = {
-    initiateGame: function(){
-
-    }
-};
-
-
-module.exports = match;
->>>>>>> 81729afd2ff369a7b48ee018b22965cf8dbd4219
