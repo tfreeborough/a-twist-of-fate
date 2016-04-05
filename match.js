@@ -1,8 +1,22 @@
 var shortid = require('shortid');
 
 var match = {
-	queue: {},
+	io: undefined,
+	queue: [],
 	games: {},
+	startGames: function(){
+		var $player1 = this.queue[0];
+        var $player2 = this.queue[1];
+        var id = this.createGame($player1, $player2);
+        $player1.socket.emit('matchFound', { gameId: id, player: 1 });
+        $player2.socket.emit('matchFound', { gameId: id, player: 2 });
+        
+        //update queue size and broadcast to world
+        this.queue.shift();
+        this.queue.shift();
+
+        this.io.of('/queue').emit('queueClientCount', { connections: this.queue.length });
+	},
 	createGame: function(player1, player2){
 		//generate unique gameid
 		var id = shortid.generate();
@@ -17,6 +31,9 @@ var match = {
 		this.games[id] = $new_match;
 
 		return id;
+	},
+	sendPlayerMessage: function(game, data){
+		game[data.playerTo]['socket'].emit("receivePlayerMessage", data.msg);
 	}
 }
 

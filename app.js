@@ -7,9 +7,9 @@ var prettyjson = require('prettyjson');
 
 var User = require("./user");
 var Match = require("./match");
+Match.io = io;
 
 //utility variables
-var $queue = [];
 var $chatRooms = {
     global: {
         name: "Global",
@@ -40,7 +40,10 @@ app.get('/match', function(req, res) {
     res.sendFile(__dirname + '/app/match.html');
 });
 
-var queueMatches = setInterval(startGames, 1000);
+var queueMatches = setInterval(function(){
+    if(Match.queue.length >= 2)
+        Match.startGames();
+}, 1000);
 
 /*
 Not sure where to put this, needed for padding 0's on the chat messages
@@ -191,9 +194,9 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
         // Id is based on the socket ID unguessable
         //  Return accepted event
         socket.emit('queueRequestAccepted', { id: $id, name: $data });
-        $queue.push({ id: $id, name: $data, socket: socket });
-        socket.broadcast.emit('queueClientCount', { connections: $queue.length });
-        io.of('/queue').emit('queueClientCount', { connections: $queue.length });
+        Match.queue.push({ id: $id, name: $data, socket: socket });
+        socket.broadcast.emit('queueClientCount', { connections: Match.queue.length });
+        io.of('/queue').emit('queueClientCount', { connections: Match.queue.length });
         //  Pass the current people in queue to the socket and broadcast to other clients
     });
 
@@ -201,14 +204,14 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     socket.on('requestQueueCancel', function(data) {
         $id = socket.id.replace('/queue#', '');
         $i = 0;
-        $queue.forEach(function(element, index, array) {
+        Match.queue.forEach(function(element, index, array) {
             //  If user id passed in in queue
             if (element.id == $id) {
-                $queue.splice($i, 1);
+                Match.queue.splice($i, 1);
                 socket.emit('requestQueueCancelAccepted', { id: $id });
                 //  Pass a cancel accept event back to the socket
-                socket.broadcast.emit('queueClientCount', { connections: $queue.length });
-                io.of('/queue').emit('queueClientCount', { connections: $queue.length });
+                socket.broadcast.emit('queueClientCount', { connections: Match.queue.length });
+                io.of('/queue').emit('queueClientCount', { connections: Match.queue.length });
                 //  Pass an event to other queuers that informs them a client has left
             }
             $i++;
@@ -218,16 +221,16 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
 
     //  Function for returning the client count upon request
     socket.on('requestQueueClientCount', function(data) {
-        socket.emit('queueClientCount', { connections: $queue.length });
+        socket.emit('queueClientCount', { connections: Match.queue.length });
     });
 
     //  Function for handling queue disconnects
     socket.on('disconnect', function(data) {
         $i = 0;
-        $queue.forEach(function(element, index, array) {
+        Match.queue.forEach(function(element, index, array) {
             //  If user id passed in in queue
             if (element.id == data.id) {
-                $queue.splice($i, 1);
+                Match.queue.splice($i, 1);
             }
             $i++;
         });
@@ -237,62 +240,8 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
 
 io.on('disconnect', function(socket) {});
 
-function startGames() {
-    //console.log("Current Games", Match.games);
-    if($queue.length >= 2){
-        var $player1 = $queue[0];
-        var $player2 = $queue[1];
-        var id = Match.createGame($player1, $player2);
-        $player1.socket.emit('matchFound', { gameId: id, player: 1 });
-        $player2.socket.emit('matchFound', { gameId: id, player: 2 });
-        
-        //update queue size and broadcast to world
-        $queue.shift();
-        $queue.shift();
-        io.of('/queue').emit('queueClientCount', { connections: $queue.length });
-
-        startGames();
-    } else {
-
-    }
-}
-
 io.of('/match').on('connection', function(socket) {
     $currentGame = null;
-    /*  Replaced. Instead of using an array, we upgraded to an object where each game has a unique key. We can quickly reference games 
-        by calling the key of the object (gameId == object key)
-        Match.games[gameID] -> game;
-
-        Instead of looping through an array (n) times.
-
-        socket.on('clientConnected', function(data) {
-            if ($games.length >= 1) {
-                $i = 0;
-                $games.forEach(function(element, index, array) {
-                    if (element.hasOwnProperty(parseInt(data.id))) {
-                        $currentGame = $games[$i];
-                        return false;
-                    }
-                    $i++;
-                });
-                if ($currentGame) {
-                    console.log('$currentGame');
-                    socket.join(data.id);
-                    var playerId = 'player' + data.player.toString();
-                    $currentGame[data.id][playerId]['connected'] = true;
-                    $currentGame[data.id][playerId]['id'] = socket.id.replace('/#', '');
-                    $games[$i] = $currentGame
-                    if ($currentGame[data.id]['player1']['connected'] == true && $currentGame[data.id]['player2']['connected'] == true) {
-                        console.log('Game can start');
-                        io.of('/match').to(data.id).emit('matchStart', { player1: $currentGame[data.id]['player1']['name'], player2: $currentGame[data.id]['player2']['name'] });
-                    } else {
-                        console.log('Waiting on a player');
-                    }
-                } else {
-                    socket.emit('matchError', { name: 'Game not found!', msg: 'No game was found with this ID.' });
-                }
-            }
-        });*/ 
 
     socket.on("clientConnected", function(data){
         if(Object.keys(Match.games).length > 0){
@@ -307,6 +256,7 @@ io.of('/match').on('connection', function(socket) {
                 console.log("PlayerId", playerId);
                 $currentGame[playerId]['connected'] = true; //beautiful
                 $currentGame[playerId]['id'] = socket.id.replace("/#", ""); //wonderful
+                $currentGame[playerId]['socket'] = socket;
 
                 //if both are connected?
                 if($currentGame['player1']['connected'] == true && $currentGame['player2']['connected']  == true) {
@@ -321,43 +271,14 @@ io.of('/match').on('connection', function(socket) {
         }
     })
 
-    /*  So I can't think of a way to keep track of when someone leaves the room. When anyone leaves the match page, the socket.on disconnect triggers for everyone. 
-        I can't find a way who exactly left.
-        
-        Maybe instead we ping each room every so often. If no response, then terminate. 
-        socket.on('disconnect', function() {
-            $i = 0;
-
-            $games.forEach(function(element, index, array) {
-                console.log(element);
-                for (var key in element) {
-                    if (!element.hasOwnProperty(key)) continue;
-                    var $game = element[key];
-                    console.log('ELEMENT PLAYER1: '+$game.player1.id);
-                    console.log('ELEMENT PLAYER2: '+$game.player2.id);
-                    console.log(socket);
-                    if ($game.player1.id == socket.id.replace('/#', '') || $game.player2.id == socket.id.replace('/#', '')) {
-                        $games.splice($i, 1);
-                        console.log('DISCONNECT FIRED');
-                        io.of('/match').to($game.id).emit('matchError', { name: 'Your opponent has disconnected', msg: 'What sort of coward leaves in the middle of a duel? COWARD! We are really sorry but because your opponent left, that means you will need to re-queue. Our Apologies :(' });
-                    }
-                }
-                $i++;
-            });
-        }); */
-
-    socket.on("disconnect", function(data){
-       console.log(data);
+    socket.on("sendPlayerMessage", function(data){
+        $currentGame = Match.games[data.id];
+        Match.sendPlayerMessage($currentGame, data);
     })
 
-
-    //when a match starts sending commands to each other, we are going to rely on this http://socket.io/docs/rooms-and-namespaces/
-    socket.on("exampleRoomEvent", function(data){
-        console.log("exampleRoomEvent", data);
-        $currentGame[data.gameId];
-
-        //the data object will contain the to value
-        socket.broadcast.to(data.gameId).emit("exampleRoomEvent", {gameId: data.gameId, msg: "Only this game room should see this event"});
+    //to do
+    socket.on("disconnect", function(data){
+       console.log(data);
     })
 });
 

@@ -36,26 +36,25 @@ var Match = React.createClass({
             }
         });
     },
+    sendPlayerMessage: function(msg){
+        matchSocket.emit("sendPlayerMessage", {id:this.state.match_id,playerTo:(this.state.player_id == 1) ? "player2" : "player1", msg: msg});
+    },  
     componentDidMount: function(){
         matchSocket.emit('clientConnected',{id:this.state.match_id,player:this.state.player_id});
         matchSocket.on('matchStart',this.matchStart);
-        matchSocket.on("exampleRoomEvent", function(data){
-            console.log("exampleRoomEvent", data);
+        matchSocket.on("receivePlayerMessage", function(data){
+            console.log("receivePlayerMessage", data);
         });
 
         delete_cookie('match_id');
         delete_cookie('player_id');
 
-        //for example sake's delete this later
-        var that = this;
-        setInterval(function(){
-            matchSocket.emit("exampleRoomEvent", {gameId:that.state.match_id, player: that.state.player_id});
-        }, 3000);
+        //delete this for production
+        window.Match = this;
     },
     componentWillUnmount: function(){
-
         matchSocket.removeListener('matchStart',this.matchStart);
-        matchSocket.removeListener("exampleRoomEvent");        
+        matchSocket.removeListener("receivePlayerMessage");        
     },
     render: function(){
         if(this.state.valid) {
