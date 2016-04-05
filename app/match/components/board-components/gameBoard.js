@@ -1,10 +1,6 @@
 /** @jsx React.DOM */
 
 var GameBoard = React.createClass({
-    componentDidMount: function(){
-    },
-    componentWillUnmount: function(){
-    },
     render: function(){
         return(
             <div>
