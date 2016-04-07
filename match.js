@@ -1,5 +1,6 @@
 var shortid = require('shortid');
 
+
 var match = {
 	queue: {},
 	games: {},
@@ -17,7 +18,12 @@ var match = {
 		this.games[id] = $new_match;
 
 		return id;
-	}
+	},
+    disconnectGame: function(io,gameId){
+        delete this.games[gameId];
+        console.log('DISCONNECT FIRED');
+        io.of('/match').to(gameId).emit('matchError', { name: 'Your opponent has disconnected', msg: 'What sort of coward leaves in the middle of a duel? COWARD! We are really sorry but because your opponent left, that means you will need to re-queue. Our Apologies :(' });
+    }
 }
 
 function Game(player1, player2, id) {

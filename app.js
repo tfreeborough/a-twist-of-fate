@@ -259,40 +259,6 @@ function startGames() {
 
 io.of('/match').on('connection', function(socket) {
     $currentGame = null;
-    /*  Replaced. Instead of using an array, we upgraded to an object where each game has a unique key. We can quickly reference games 
-        by calling the key of the object (gameId == object key)
-        Match.games[gameID] -> game;
-
-        Instead of looping through an array (n) times.
-
-        socket.on('clientConnected', function(data) {
-            if ($games.length >= 1) {
-                $i = 0;
-                $games.forEach(function(element, index, array) {
-                    if (element.hasOwnProperty(parseInt(data.id))) {
-                        $currentGame = $games[$i];
-                        return false;
-                    }
-                    $i++;
-                });
-                if ($currentGame) {
-                    console.log('$currentGame');
-                    socket.join(data.id);
-                    var playerId = 'player' + data.player.toString();
-                    $currentGame[data.id][playerId]['connected'] = true;
-                    $currentGame[data.id][playerId]['id'] = socket.id.replace('/#', '');
-                    $games[$i] = $currentGame
-                    if ($currentGame[data.id]['player1']['connected'] == true && $currentGame[data.id]['player2']['connected'] == true) {
-                        console.log('Game can start');
-                        io.of('/match').to(data.id).emit('matchStart', { player1: $currentGame[data.id]['player1']['name'], player2: $currentGame[data.id]['player2']['name'] });
-                    } else {
-                        console.log('Waiting on a player');
-                    }
-                } else {
-                    socket.emit('matchError', { name: 'Game not found!', msg: 'No game was found with this ID.' });
-                }
-            }
-        });*/ 
 
     socket.on("clientConnected", function(data){
         if(Object.keys(Match.games).length > 0){
@@ -301,12 +267,14 @@ io.of('/match').on('connection', function(socket) {
 
             //assume the id maps to a define property
             if($currentGame) {
-                console.log("Current game is", $currentGame);
                 socket.join(data.id); //not sure what this does
                 var playerId = "player" + data.player.toString();
                 console.log("PlayerId", playerId);
                 $currentGame[playerId]['connected'] = true; //beautiful
                 $currentGame[playerId]['id'] = socket.id.replace("/#", ""); //wonderful
+
+                socket.gameId = data.id;
+                console.log('Setting sockets game id to: '+data.id);
 
                 //if both are connected?
                 if($currentGame['player1']['connected'] == true && $currentGame['player2']['connected']  == true) {
@@ -321,10 +289,10 @@ io.of('/match').on('connection', function(socket) {
         }
     })
 
-    /*  So I can't think of a way to keep track of when someone leaves the room. When anyone leaves the match page, the socket.on disconnect triggers for everyone. 
+    /*  So I can't think of a way to keep track of when someone leaves the room. When anyone leaves the match page, the socket.on disconnect triggers for everyone.
         I can't find a way who exactly left.
-        
-        Maybe instead we ping each room every so often. If no response, then terminate. 
+
+        Maybe instead we ping each room every so often. If no response, then terminate.
         socket.on('disconnect', function() {
             $i = 0;
 
@@ -339,7 +307,7 @@ io.of('/match').on('connection', function(socket) {
                     if ($game.player1.id == socket.id.replace('/#', '') || $game.player2.id == socket.id.replace('/#', '')) {
                         $games.splice($i, 1);
                         console.log('DISCONNECT FIRED');
-                        io.of('/match').to($game.id).emit('matchError', { name: 'Your opponent has disconnected', msg: 'What sort of coward leaves in the middle of a duel? COWARD! We are really sorry but because your opponent left, that means you will need to re-queue. Our Apologies :(' });
+
                     }
                 }
                 $i++;
@@ -347,15 +315,16 @@ io.of('/match').on('connection', function(socket) {
         }); */
 
     socket.on("disconnect", function(data){
-       console.log(data);
-    })
+        var $currentGames = Match.games;
+        if(typeof $currentGames[socket.gameId] !== 'undefined'){
+            Match.disconnectGame(io,socket.gameId);
+        }
+    });
 
 
     //when a match starts sending commands to each other, we are going to rely on this http://socket.io/docs/rooms-and-namespaces/
     socket.on("exampleRoomEvent", function(data){
         console.log("exampleRoomEvent", data);
-        $currentGame[data.gameId];
-
         //the data object will contain the to value
         socket.broadcast.to(data.gameId).emit("exampleRoomEvent", {gameId: data.gameId, msg: "Only this game room should see this event"});
     })

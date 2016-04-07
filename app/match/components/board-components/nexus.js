@@ -10,11 +10,7 @@ var Nexus = React.createClass({
         )
     },
     componentDidMount: function(){
-        var that = this;
-        setInterval(function(){
-            var random = Math.floor(Math.random() * 45) + 1;
-            that.setState({health:random});
-        },3000)
+
     },
     render: function(){
        return(
