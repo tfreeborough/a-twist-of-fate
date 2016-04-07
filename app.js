@@ -7,9 +7,9 @@ var prettyjson = require('prettyjson');
 
 var User = require("./user");
 var Match = require("./match");
+Match.io = io;
 
 //utility variables
-var $queue = [];
 var $chatRooms = {
     global: {
         name: "Global",
@@ -40,7 +40,10 @@ app.get('/match', function(req, res) {
     res.sendFile(__dirname + '/app/match.html');
 });
 
-var queueMatches = setInterval(startGames, 1000);
+var queueMatches = setInterval(function(){
+    if(Match.queue.length >= 2)
+        Match.startGames();
+}, 1000);
 
 /*
 Not sure where to put this, needed for padding 0's on the chat messages
@@ -191,9 +194,9 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
         // Id is based on the socket ID unguessable
         //  Return accepted event
         socket.emit('queueRequestAccepted', { id: $id, name: $data });
-        $queue.push({ id: $id, name: $data, socket: socket });
-        socket.broadcast.emit('queueClientCount', { connections: $queue.length });
-        io.of('/queue').emit('queueClientCount', { connections: $queue.length });
+        Match.queue.push({ id: $id, name: $data, socket: socket });
+        socket.broadcast.emit('queueClientCount', { connections: Match.queue.length });
+        io.of('/queue').emit('queueClientCount', { connections: Match.queue.length });
         //  Pass the current people in queue to the socket and broadcast to other clients
     });
 
@@ -201,14 +204,14 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
     socket.on('requestQueueCancel', function(data) {
         $id = socket.id.replace('/queue#', '');
         $i = 0;
-        $queue.forEach(function(element, index, array) {
+        Match.queue.forEach(function(element, index, array) {
             //  If user id passed in in queue
             if (element.id == $id) {
-                $queue.splice($i, 1);
+                Match.queue.splice($i, 1);
                 socket.emit('requestQueueCancelAccepted', { id: $id });
                 //  Pass a cancel accept event back to the socket
-                socket.broadcast.emit('queueClientCount', { connections: $queue.length });
-                io.of('/queue').emit('queueClientCount', { connections: $queue.length });
+                socket.broadcast.emit('queueClientCount', { connections: Match.queue.length });
+                io.of('/queue').emit('queueClientCount', { connections: Match.queue.length });
                 //  Pass an event to other queuers that informs them a client has left
             }
             $i++;
@@ -218,16 +221,16 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
 
     //  Function for returning the client count upon request
     socket.on('requestQueueClientCount', function(data) {
-        socket.emit('queueClientCount', { connections: $queue.length });
+        socket.emit('queueClientCount', { connections: Match.queue.length });
     });
 
     //  Function for handling queue disconnects
     socket.on('disconnect', function(data) {
         $i = 0;
-        $queue.forEach(function(element, index, array) {
+        Match.queue.forEach(function(element, index, array) {
             //  If user id passed in in queue
             if (element.id == data.id) {
-                $queue.splice($i, 1);
+                Match.queue.splice($i, 1);
             }
             $i++;
         });
@@ -236,26 +239,6 @@ var queueConnection = io.of('/queue').on('connection', function(socket) {
 
 
 io.on('disconnect', function(socket) {});
-
-function startGames() {
-    //console.log("Current Games", Match.games);
-    if($queue.length >= 2){
-        var $player1 = $queue[0];
-        var $player2 = $queue[1];
-        var id = Match.createGame($player1, $player2);
-        $player1.socket.emit('matchFound', { gameId: id, player: 1 });
-        $player2.socket.emit('matchFound', { gameId: id, player: 2 });
-        
-        //update queue size and broadcast to world
-        $queue.shift();
-        $queue.shift();
-        io.of('/queue').emit('queueClientCount', { connections: $queue.length });
-
-        startGames();
-    } else {
-
-    }
-}
 
 io.of('/match').on('connection', function(socket) {
     $currentGame = null;
@@ -272,6 +255,7 @@ io.of('/match').on('connection', function(socket) {
                 console.log("PlayerId", playerId);
                 $currentGame[playerId]['connected'] = true; //beautiful
                 $currentGame[playerId]['id'] = socket.id.replace("/#", ""); //wonderful
+                $currentGame[playerId]['socket'] = socket;
 
                 socket.gameId = data.id;
                 console.log('Setting sockets game id to: '+data.id);
@@ -289,6 +273,7 @@ io.of('/match').on('connection', function(socket) {
         }
     })
 
+<<<<<<< HEAD
     /*  So I can't think of a way to keep track of when someone leaves the room. When anyone leaves the match page, the socket.on disconnect triggers for everyone.
         I can't find a way who exactly left.
 
@@ -313,8 +298,16 @@ io.of('/match').on('connection', function(socket) {
                 $i++;
             });
         }); */
+=======
+    socket.on("sendPlayerMessage", function(data){
+        $currentGame = Match.games[data.id];
+        Match.sendPlayerMessage($currentGame, data);
+    })
+>>>>>>> 661e35440a054d0a3ece42d7d932ece9c75bca99
 
+    //to do
     socket.on("disconnect", function(data){
+<<<<<<< HEAD
         var $currentGames = Match.games;
         if(typeof $currentGames[socket.gameId] !== 'undefined'){
             Match.disconnectGame(io,socket.gameId);
@@ -327,6 +320,9 @@ io.of('/match').on('connection', function(socket) {
         console.log("exampleRoomEvent", data);
         //the data object will contain the to value
         socket.broadcast.to(data.gameId).emit("exampleRoomEvent", {gameId: data.gameId, msg: "Only this game room should see this event"});
+=======
+       console.log(data);
+>>>>>>> 661e35440a054d0a3ece42d7d932ece9c75bca99
     })
 });
 
