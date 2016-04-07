@@ -271,58 +271,27 @@ io.of('/match').on('connection', function(socket) {
                 socket.emit('matchError', { name: 'Game not found!', msg: 'No game was found with this ID.' });
             }
         }
-    })
+    });
 
-<<<<<<< HEAD
-    /*  So I can't think of a way to keep track of when someone leaves the room. When anyone leaves the match page, the socket.on disconnect triggers for everyone.
-        I can't find a way who exactly left.
-
-        Maybe instead we ping each room every so often. If no response, then terminate.
-        socket.on('disconnect', function() {
-            $i = 0;
-
-            $games.forEach(function(element, index, array) {
-                console.log(element);
-                for (var key in element) {
-                    if (!element.hasOwnProperty(key)) continue;
-                    var $game = element[key];
-                    console.log('ELEMENT PLAYER1: '+$game.player1.id);
-                    console.log('ELEMENT PLAYER2: '+$game.player2.id);
-                    console.log(socket);
-                    if ($game.player1.id == socket.id.replace('/#', '') || $game.player2.id == socket.id.replace('/#', '')) {
-                        $games.splice($i, 1);
-                        console.log('DISCONNECT FIRED');
-
-                    }
-                }
-                $i++;
-            });
-        }); */
-=======
     socket.on("sendPlayerMessage", function(data){
         $currentGame = Match.games[data.id];
         Match.sendPlayerMessage($currentGame, data);
     })
->>>>>>> 661e35440a054d0a3ece42d7d932ece9c75bca99
+
 
     //to do
     socket.on("disconnect", function(data){
-<<<<<<< HEAD
         var $currentGames = Match.games;
         if(typeof $currentGames[socket.gameId] !== 'undefined'){
             Match.disconnectGame(io,socket.gameId);
         }
     });
-
-
+    
     //when a match starts sending commands to each other, we are going to rely on this http://socket.io/docs/rooms-and-namespaces/
     socket.on("exampleRoomEvent", function(data){
         console.log("exampleRoomEvent", data);
         //the data object will contain the to value
         socket.broadcast.to(data.gameId).emit("exampleRoomEvent", {gameId: data.gameId, msg: "Only this game room should see this event"});
-=======
-       console.log(data);
->>>>>>> 661e35440a054d0a3ece42d7d932ece9c75bca99
-    })
+    });
 });
 
