@@ -263,6 +263,10 @@ io.of('/match').on('connection', function(socket) {
                 //if both are connected?
                 if($currentGame['player1']['connected'] == true && $currentGame['player2']['connected']  == true) {
                     console.log("Game can start", "GLHF");
+
+                    Match.initializeGameDetails(data.id);
+                    console.log(Match.games[data.id].match); //Debugging initializeGameDetails
+
                     io.of('/match').to(data.id).emit('matchStart', {player1: $currentGame['player1']['name'], player2: $currentGame['player2']['name'] });
                 } else {
                     console.log("Waiting on a player");
@@ -286,7 +290,7 @@ io.of('/match').on('connection', function(socket) {
             Match.disconnectGame(io,socket.gameId);
         }
     });
-    
+
     //when a match starts sending commands to each other, we are going to rely on this http://socket.io/docs/rooms-and-namespaces/
     socket.on("exampleRoomEvent", function(data){
         console.log("exampleRoomEvent", data);

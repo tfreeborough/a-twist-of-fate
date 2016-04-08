@@ -5,7 +5,7 @@
 
 
 var logic = {
-
+    baseHealth: 45, //Set global nexus health variable
 };
 
 module.exports = logic;
