@@ -100,7 +100,12 @@ var match = {
     disconnectGame: function(io,gameId){
         delete this.games[gameId];
         console.log('DISCONNECT FIRED');
-        io.of('/match').to(gameId).emit('matchError', { name: 'Your opponent has disconnected', msg: 'What sort of coward leaves in the middle of a duel? COWARD! We are really sorry but because your opponent left, that means you will need to re-queue. Our Apologies :(' });
+        io.of('/match').to(gameId).emit('matchError', {
+            name: 'Your opponent has disconnected',
+            msg:    'What sort of coward leaves in the middle of a duel? ' +
+                    'COWARD! We are really sorry but because your opponent left, ' +
+                    'that means you will need to re-queue. Our Apologies :('
+        });
     },
 
 
@@ -125,25 +130,40 @@ var match = {
 
     /*
     @method     initializeGameDetails
-    @param      string gameId
+    @param      string $gameId
     @desc       initialize all data required to get the ball rolling, such as details about first player, empty deck &
                 hand information and boolean prompt to trigger deck draw method in match-logic.
      */
-    initializeGameDetails: function(gameId){
-        var match = this.games[gameId];                 //Make a copy of the current match details
-        var initializedGame = {};                       //Initialize an empty object
-        initializedGame.currentTurn = match.player1.id;    //Set the initial turn to player1
-        initializedGame.decksDrawn = false;             //Set initial deck draw to false so we force a draw
+    initializeGameDetails: function($gameId){
+        var $match = this.games[$gameId];                 //Make a copy of the current match details
+        var $initializedGame = {};                       //Initialize an empty object
+        $initializedGame.currentTurn = $match.player1.id; //Set the initial turn to player1
+        $initializedGame.decksDrawn = false;             //Set initial deck draw to false so we force a draw
 
-        var initializedPlayerInfo = {};                 //Initialize an empty player Info object
-        initializedPlayerInfo.deck = {};                //Set an empty deck
-        initializedPlayerInfo.hand = {};                //Set an empty hand
-        initializedPlayerInfo.nexus = Logic.baseHealth; //Set nexus health from base health
+        var $initializedPlayerInfo = {};                 //Initialize an empty player Info object
+        $initializedPlayerInfo.deck = {};                //Set an empty deck
+        $initializedPlayerInfo.hand = {};                //Set an empty hand
+        $initializedPlayerInfo.board = {};               //Set an empty board
+        $initializedPlayerInfo.nexus = Logic.baseHealth; //Set nexus health from base health
 
-        initializedGame[match.player1.id] = initializedPlayerInfo;            //Set player1 specific match info to false
-        initializedGame[match.player2.id] = initializedPlayerInfo;            //Set player2 specific match info to false
-        
-        this.games[gameId].match = initializedGame;
+        $initializedGame[$match.player1.id] = $initializedPlayerInfo;          //Set player1 specific match info to false
+        $initializedGame[$match.player2.id] = $initializedPlayerInfo;          //Set player2 specific match info to false
+
+        this.games[$gameId].match = $initializedGame;
+    },
+
+
+
+
+    checkSeeding: function($gameId){
+        var $match = this.games[$gameId];
+        if(!$match.decksDrawn){
+            console.log('SEEDING PLAYER DECKS');
+            $match.match[$match.player1.id].deck = Logic.seedDeck($match,[8,12,10],false);
+            $match.match[$match.player2.id].deck = Logic.seedDeck($match,[8,12,10],false);
+            $match.match.decksDrawn = true;
+        }
+        this.games[$gameId] = $match;
     }
 };
 // END OF MATCH OBJECT

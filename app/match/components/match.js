@@ -35,6 +35,7 @@ var Match = React.createClass({
                 }).play();
             }
         });
+
     },
     sendPlayerMessage: function(msg){
         matchSocket.emit("sendPlayerMessage", {id:this.state.match_id,playerTo:(this.state.player_id == 1) ? "player2" : "player1", msg: msg});
