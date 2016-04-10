@@ -554,7 +554,7 @@ var roster = {
             name:"Elixir of Rage",
             flavour:"ROID-RAGE!",
             description:"Increases damage dealt 2, but increases damage taken by 2 (lasts 3 turns)",
-            amount:2,
+            amount:1,
             type:"potion",
             duration:3,
             modifiers: {

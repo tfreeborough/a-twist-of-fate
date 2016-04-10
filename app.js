@@ -266,7 +266,7 @@ io.of('/match').on('connection', function(socket) {
 
                     Match.initializeGameDetails(data.id);
                     Match.checkSeeding(data.id);
-                    console.log(Match.games[data.id].match); //Debugging initializeGameDetails
+                    //console.log(Match.games[data.id].match); //Debugging initializeGameDetails
 
                     io.of('/match').to(data.id).emit('matchStart', {player1: $currentGame['player1']['name'], player2: $currentGame['player2']['name'] });
                 } else {

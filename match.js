@@ -159,8 +159,8 @@ var match = {
         var $match = this.games[$gameId];
         if(!$match.decksDrawn){
             console.log('SEEDING PLAYER DECKS');
-            $match.match[$match.player1.id].deck = Logic.seedDeck($match,[8,12,10],false);
-            $match.match[$match.player2.id].deck = Logic.seedDeck($match,[8,12,10],false);
+            $match.match[$match.player1.id].deck = Logic.seedDeck($match,[8,12,10],false); //Seed a deck in random assortment for each player
+            $match.match[$match.player2.id].deck = Logic.seedDeck($match,[8,12,10],false); //Seed a deck in random assortment for each player
             $match.match.decksDrawn = true;
         }
         this.games[$gameId] = $match;
