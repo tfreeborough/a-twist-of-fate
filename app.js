@@ -32,12 +32,16 @@ app.use("/styles", express.static(__dirname + '/app/styles'));
 app.use("/assets", express.static(__dirname + '/app/assets'));
 app.use("/font", express.static(__dirname + '/app/font'));
 app.use("/match", express.static(__dirname + '/app/match'));
+app.use("/debug", express.static(__dirname + '/app/debug'));
 
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/app/index.html');
 });
 app.get('/match', function(req, res) {
     res.sendFile(__dirname + '/app/match.html');
+});
+app.get('/debug', function(req, res) {
+    res.sendFile(__dirname + '/app/debug.html');
 });
 
 var queueMatches = setInterval(function(){
@@ -250,9 +254,9 @@ io.of('/match').on('connection', function(socket) {
 
             //assume the id maps to a define property
             if($currentGame) {
-                socket.join(data.id); //not sure what this does
+                socket.join(data.id); //creates a socket channel for this game ID
                 var playerId = "player" + data.player.toString();
-                console.log("PlayerId", playerId);
+                console.log("PlayerId", playerId); 
                 $currentGame[playerId]['connected'] = true; //beautiful
                 $currentGame[playerId]['id'] = socket.id.replace("/#", ""); //wonderful
                 $currentGame[playerId]['socket'] = socket;
@@ -260,13 +264,15 @@ io.of('/match').on('connection', function(socket) {
                 socket.gameId = data.id;
                 console.log('Setting sockets game id to: '+data.id);
 
-                //if both are connected?
+                //If both players are connected
                 if($currentGame['player1']['connected'] == true && $currentGame['player2']['connected']  == true) {
                     console.log("Game can start", "GLHF");
 
                     Match.initializeGameDetails(data.id);
                     Match.checkSeeding(data.id);
-                    //console.log(Match.games[data.id].match); //Debugging initializeGameDetails
+                    console.log("MatchID: "+data.id); //Debugging initializeGameDetails
+
+                    //draw initial hand
 
                     io.of('/match').to(data.id).emit('matchStart', {player1: $currentGame['player1']['name'], player2: $currentGame['player2']['name'] });
                 } else {
@@ -284,7 +290,6 @@ io.of('/match').on('connection', function(socket) {
     })
 
 
-    //to do
     socket.on("disconnect", function(data){
         var $currentGames = Match.games;
         if(typeof $currentGames[socket.gameId] !== 'undefined'){
@@ -299,4 +304,24 @@ io.of('/match').on('connection', function(socket) {
         socket.broadcast.to(data.gameId).emit("exampleRoomEvent", {gameId: data.gameId, msg: "Only this game room should see this event"});
     });
 });
+
+io.of('/debug').on('connection', function(socket){
+    $debugGame = null;
+
+    socket.on("debugById", function(data){
+        $debugGame = Match.games[data.id];
+          
+        if($debugGame) {
+
+            $debugGame = $debugGame.match;
+
+            socket.emit("gameState", $debugGame || {});
+        } else {
+            socket.emit("gameState", {});
+        }
+
+
+            
+    })
+})
 

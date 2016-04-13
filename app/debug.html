@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta Information -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Debug</title>
+    <meta name="description" content="Play the one and only League of Legends card game online, are you ready for A Twist of Fate?">
+    <link rel="icon" href="/assets/icons/icon.png">
+
+    <!-- Styles -->
+    <link href="/styles/match.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="/styles/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.css" rel="stylesheet">
+
+    <!-- Required For React -->
+    <script src="/react/react-with-addons.min.js"></script>
+    <script src="/react/react-dom.min.js"></script>
+    <script src="/react/jsx-transformer.js"></script>
+
+    <!--router-->
+    <script src="https://npmcdn.com/react-router/umd/ReactRouter.min.js"></script>
+
+    <!-- Socket IO -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/react/socket-address.js"></script>
+
+    <!-- Venti -->
+    <script src="/external_scripts/venti.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="/external_scripts/jquery-2.2.1.min.js"></script>
+    <script src="/external_scripts/jquery-ui.min.js"></script>
+
+    <!-- Useful Stuff -->
+    <script src="/external_scripts/useful.js"></script>
+
+    <!-- Howler -->
+    <script src="/external_scripts/howler.min.js"></script>
+    <script src="/external_scripts/sound-manager.js"></script>
+    <!-- Materialize JS -->
+    <script src="/external_scripts/materialize.min.js"></script>
+
+
+    <!-- React Components -->
+    <script type="text/jsx" src="/debug/components/debug.js"></script>
+
+
+</head>
+<body>
+<div id="debug">
+
+</div>
+
+</body>
+<script type="text/jsx">
+    /** @jsx React.DOM **/
+    React.render(<Debug />,document.getElementById('debug'));
+</script>
+</html>

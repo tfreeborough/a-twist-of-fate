@@ -10,3 +10,7 @@ if(window.location.pathname == '/'){
 if(window.location.pathname == '/match/'){
     var matchSocket = io('http://localhost/match');
 }
+
+if(window.location.pathname == '/debug/'){
+	var debugSocket = io('http://localhost/debug');
+}
