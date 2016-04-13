@@ -1,6 +1,6 @@
 var shortid = require('shortid');
 var Logic = require('./match-logic'); // Import separated match logic
-
+var deepcopy = require('deepcopy');
 
 
 
@@ -143,11 +143,12 @@ var match = {
         var $initializedPlayerInfo = {};                 //Initialize an empty player Info object
         $initializedPlayerInfo.deck = {};                //Set an empty deck
         $initializedPlayerInfo.hand = {};                //Set an empty hand
+        $initializedPlayerInfo.grave = {};               //Set an empty grave
         $initializedPlayerInfo.board = {};               //Set an empty board
         $initializedPlayerInfo.nexus = Logic.baseHealth; //Set nexus health from base health
 
-        $initializedGame[$match.player1.id] = $initializedPlayerInfo;          //Set player1 specific match info to false
-        $initializedGame[$match.player2.id] = $initializedPlayerInfo;          //Set player2 specific match info to false
+        $initializedGame[$match.player1.id] = deepcopy($initializedPlayerInfo);          //Set player1 specific match info to false
+        $initializedGame[$match.player2.id] = deepcopy($initializedPlayerInfo);          //Set player2 specific match info to false
 
         this.games[$gameId].match = $initializedGame;
     },
@@ -158,9 +159,21 @@ var match = {
     checkSeeding: function($gameId){
         var $match = this.games[$gameId];
         if(!$match.decksDrawn){
-            console.log('SEEDING PLAYER DECKS');
-            $match.match[$match.player1.id].deck = Logic.seedDeck($match,[8,12,10],false); //Seed a deck in random assortment for each player
-            $match.match[$match.player2.id].deck = Logic.seedDeck($match,[8,12,10],false); //Seed a deck in random assortment for each player
+            console.log('checkSeeding: SEEDING PLAYER DECKS');
+            $match.match[$match.player1.id].deck = Logic.seedDeck([8,12,10],false); //Seed a deck in random assortment for each player
+            $match.match[$match.player2.id].deck = Logic.seedDeck([8,12,10],false); //Seed a deck in random assortment for each player
+            
+            Logic.turnCardsUnique($match); //turns cards unique for both player decks
+            
+            $match.match[$match.player1.id].deckOrder = Object.keys($match.match[$match.player1.id].deck); //creates deck order
+            $match.match[$match.player2.id].deckOrder = Object.keys($match.match[$match.player2.id].deck); //creates deck order
+
+            Logic.shuffleDeck($match.match[$match.player1.id].deckOrder); //shuffles deck
+            Logic.shuffleDeck($match.match[$match.player1.id].deckOrder); //shuffles deck
+
+            Logic.drawCards(5, $match.match[$match.player1.id]); //draw 5 initial cards
+            Logic.drawCards(5, $match.match[$match.player2.id]); //draw 5 initial cards
+
             $match.match.decksDrawn = true;
         }
         this.games[$gameId] = $match;

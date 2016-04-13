@@ -26,6 +26,7 @@
     "bcrypt-nodejs":"^0.0.3",
     "promise":"^7.1.1",
     "shortid":"^2.2.6",
+    "deepcopy":"^0.6.1",
     "prettyjson":"^1.1.3"
   }
 }
